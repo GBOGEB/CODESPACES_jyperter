@@ -15,5 +15,42 @@
     "src/measure_phase/parser",
     "tests",
     "tests/measure_phase"
+  ],
+  "sections": [
+    {
+      "id": "SEC-01",
+      "title": "Execution Flow Diagram",
+      "status": "planned"
+    },
+    {
+      "id": "SEC-02",
+      "title": "Makefile and VSCode Tasking",
+      "status": "planned"
+    },
+    {
+      "id": "SEC-03",
+      "title": "Recursive Model",
+      "status": "planned"
+    },
+    {
+      "id": "SEC-04",
+      "title": "Artefact Structure",
+      "status": "planned"
+    },
+    {
+      "id": "SEC-05",
+      "title": "Patch and ZIP Bundles",
+      "status": "planned"
+    },
+    {
+      "id": "SEC-06",
+      "title": "GitHub Workflow Steps",
+      "status": "planned"
+    },
+    {
+      "id": "SEC-07",
+      "title": "Semantic Tracking Spec",
+      "status": "planned"
+    }
   ]
 }
