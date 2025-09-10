@@ -11,12 +11,19 @@ from pathlib import Path
 
 def get_git_log(req_id: str) -> list[str]:
     """Return commit summaries that mention the requirement ID."""
-    result = subprocess.run(
-        ["git", "log", "--pretty=format:%h %s", f"--grep={req_id}"],
-        capture_output=True,
-        text=True,
-        check=True,
-    )
+    try:
+        result = subprocess.run(
+            ["git", "log", "--pretty=format:%h %s", f"--grep={req_id}"],
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+    except FileNotFoundError:
+        print("Error: 'git' command not found. Please ensure git is installed and available in your PATH.", file=sys.stderr)
+        return []
+    except subprocess.CalledProcessError:
+        print("Error: Failed to run 'git log'. Make sure you are in a git repository.", file=sys.stderr)
+        return []
     lines = [line.strip() for line in result.stdout.splitlines() if line.strip()]
     return lines
 
