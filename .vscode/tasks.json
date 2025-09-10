@@ -1,0 +1,23 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "REQ-01 changelog",
+      "type": "shell",
+      "command": "python",
+      "args": ["scripts/update_changelog.py", "REQ-01"],
+      "group": "none",
+      "presentation": {"reveal": "always"},
+      "problemMatcher": []
+    },
+    {
+      "label": "REQ-02 changelog",
+      "type": "shell",
+      "command": "python",
+      "args": ["scripts/update_changelog.py", "REQ-02"],
+      "group": "none",
+      "presentation": {"reveal": "always"},
+      "problemMatcher": []
+    }
+  ]
+}
