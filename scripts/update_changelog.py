@@ -33,7 +33,15 @@ def main(req_id: str | None = None) -> None:
 
     If `req_id` is provided, only that requirement is processed.
     """
-    index_data = json.loads(Path("index.json").read_text())
+    index_path = Path("index.json")
+    try:
+        index_data = json.loads(index_path.read_text())
+    except FileNotFoundError:
+        print("Error: index.json not found in the current directory.", file=sys.stderr)
+        return
+    except json.JSONDecodeError:
+        print("Error: index.json contains invalid JSON.", file=sys.stderr)
+        return
     requirements = index_data["requirements"]
 
     if req_id:
