@@ -1,0 +1,9 @@
+pass_rate:
+  threshold: 0.90
+  comparison: ">="
+defect_rate:
+  threshold: 0.05
+  comparison: "<="
+coverage_delta:
+  threshold: 0.05
+  comparison: ">="
