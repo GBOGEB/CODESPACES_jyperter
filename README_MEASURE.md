@@ -1,0 +1,340 @@
+
+# DMAIC Measure Phase - Enhanced Heterogeneous Artifact Support
+
+## Overview
+
+The DMAIC Measure Phase provides comprehensive artifact analysis, indexing, ranking, and integration capabilities for heterogeneous environments. This system supports VISIO, WORD, ZIP, MARKDOWN, PDF, and POWERPOINT files with priority-based processing and [KEB] pipeline integration.
+
+## Key Features
+
+### 🎯 Enhanced Artifact Analysis Framework
+- **Artifact Type Classifier**: Automatic classification of VISIO, WORD, ZIP, MARKDOWN, PDF, POWERPOINT files
+- **Priority-based Processing**: ZIP files receive highest priority (contains code and documentation)
+- **SQL-like Querying**: Full-text search with SQLite FTS5 and ranking capabilities
+- **Artifact Indexing**: Comprehensive metadata extraction and searchable content indexing
+
+### 🔄 [KEB] Pipeline Integration Architecture
+- **Callable Interface**: INPUT/OUTPUT analysis integration with [KEB] pipeline
+- **Artifact-to-[KEB] Mapping**: Intelligent routing based on artifact types and content
+- **Local Priority Cache**: LRU cache with performance optimization for frequently accessed artifacts
+- **Reference Linking**: ZIP→Markdown handover file relationships
+
+### 🌐 Heterogeneous Environment Support
+- **Universal Parsers**: Specialized parsers for each supported file type
+- **Adaptive Processing**: Type-specific processing pipelines with cross-references
+- **Manifest Generation**: Automatic ZIP file content cataloging
+- **Cross-reference System**: Links between different artifact types
+
+### 📊 Measurement and Metrics Framework
+- **KPI Tracking**: Processing rates, success rates, performance metrics
+- **Traceability Metrics**: Artifact relationships and processing lineage
+- **Performance Dashboard**: Real-time monitoring and alerting
+- **Inventory Management**: Comprehensive artifact status tracking
+
+### 🔄 Integration Workflow Design
+- **DEEP Agent → GitHub → User Git**: Automated synchronization workflow
+- **Version Control Integration**: All artifact types with automated testing
+- **Automated Testing Framework**: Pipeline validation and integrity checks
+
+## Architecture
+
+```
+src/measure_phase/
+├── __init__.py                 # Main module exports
+├── classifier.py              # Artifact type classification
+├── index.py                   # SQLite FTS5 indexing system
+├── ranking.py                 # Multi-dimensional ranking system
+├── cache.py                   # Priority cache with LRU eviction
+├── keb_interface.py           # [KEB] pipeline integration
+├── workflow.py                # Git workflow and synchronization
+├── metrics.py                 # KPI and performance metrics
+└── parser/                    # Universal artifact parsers
+    ├── __init__.py
+    ├── base_parser.py         # Abstract parser interface
+    ├── zip_parser.py          # ZIP archive parser (priority)
+    ├── visio_parser.py        # Visio diagram parser
+    ├── word_parser.py         # Word document parser
+    ├── markdown_parser.py     # Markdown parser
+    ├── pdf_parser.py          # PDF parser
+    └── powerpoint_parser.py   # PowerPoint parser
+```
+
+## Quick Start
+
+### Installation
+
+```bash
+# Install dependencies
+pip install -r requirements.txt
+
+# Import the system
+from src.measure_phase import (
+    ArtifactClassifier, 
+    ArtifactIndexer, 
+    ArtifactRanker,
+    PriorityCache,
+    KEBAdapter,
+    WorkflowSync
+)
+```
+
+### Basic Usage
+
+```python
+# 1. Classify artifacts in a directory
+classifier = ArtifactClassifier()
+artifacts = classifier.classify_directory("/path/to/artifacts", recursive=True)
+
+# 2. Index artifacts for searching
+indexer = ArtifactIndexer("artifacts.db")
+for artifact_type, metadata in artifacts:
+    indexer.index_artifact(metadata['file_path'], artifact_type.name, metadata)
+
+# 3. Rank artifacts by importance
+ranker = ArtifactRanker()
+ranked_artifacts = ranker.rank_all_dimensions(artifacts)
+
+# 4. Search with SQL-like queries
+results = indexer.search("python code OR documentation", 
+                        artifact_types=['ZIP', 'MARKDOWN'])
+
+# 5. Process through [KEB] pipeline
+keb_adapter = KEBAdapter()
+keb_results = keb_adapter.batch_process_artifacts(artifacts)
+```
+
+### Priority Processing (ZIP Files First)
+
+```python
+# ZIP files are automatically prioritized
+processing_order = classifier.get_processing_order(artifacts)
+
+# ZIP files with Python code get highest priority
+for artifact_type, metadata in processing_order:
+    if artifact_type.name == 'ZIP' and metadata.get('has_code'):
+        print(f"High priority: {metadata['file_path']}")
+        # Process immediately
+```
+
+## Supported File Types
+
+| Type | Extensions | Priority | Special Features |
+|------|------------|----------|------------------|
+| ZIP | .zip, .zipx | 1 (Highest) | Code extraction, manifest generation, handover docs |
+| MARKDOWN | .md, .markdown | 2 | Structure analysis, link extraction, README detection |
+| VISIO | .vsdx | 3 | Shape extraction, connection analysis, diagram classification |
+| WORD | .docx | 4 | Table extraction, document classification, metadata |
+| PDF | .pdf | 5 | Text extraction, image cataloging, structure analysis |
+| POWERPOINT | .pptx | 6 | Slide analysis, content extraction, presentation classification |
+
+## Ranking System
+
+### Multi-dimensional Ranking
+- **Total Rank**: Overall importance across all artifacts
+- **Group Rank**: Ranking within artifact type groups  
+- **Self Rank**: Individual artifact quality metrics
+- **Pipeline Role**: Importance in processing pipeline
+
+### Ranking Factors
+- File size and modification recency
+- Content richness (text, images, structure)
+- Type priority and processing complexity
+- Pipeline importance and role
+
+## [KEB] Pipeline Integration
+
+### Callable Interface
+```python
+# Create [KEB] callable interface
+keb_callable = keb_adapter.create_keb_callable_interface()
+
+# Process artifact through [KEB]
+result = keb_callable({
+    'file_path': '/path/to/artifact.zip',
+    'artifact_type': 'ZIP',
+    'metadata': {...}
+})
+```
+
+### Artifact-to-[KEB] Mapping
+- ZIP → Code analysis and documentation extraction
+- MARKDOWN → Documentation processing and link validation
+- WORD → Requirements extraction and procedure automation
+- PDF → OCR and searchable indexing
+- POWERPOINT → Content extraction and training modules
+- VISIO → Process automation and topology extraction
+
+## Performance Features
+
+### Caching System
+- **LRU Eviction**: Intelligent cache management
+- **Priority-based**: High-priority artifacts stay cached longer
+- **Memory Management**: Configurable size and memory limits
+- **Persistence**: Save/load cache to disk
+
+### Indexing Performance
+- **SQLite FTS5**: Full-text search with BM25 ranking
+- **Incremental Updates**: Only reindex changed files
+- **Batch Processing**: Efficient bulk operations
+- **Query Optimization**: Prepared statements and indexes
+
+## Workflow Integration
+
+### Git Workflow
+```python
+# Initialize workflow sync
+workflow = WorkflowSync("/workspace", "https://github.com/user/repo.git")
+
+# Sync artifacts to workspace
+workflow.sync_artifacts(artifacts, "measure_phase_update")
+
+# Push to GitHub (creates feature branch)
+workflow.push_to_github()
+
+# Generate PR data
+pr_data = workflow.create_pull_request_data("feature-branch", "Measure Phase Update")
+```
+
+### Automated Testing
+- Artifact validation tests
+- Index integrity checks  
+- Cache consistency verification
+- Pipeline integration tests
+
+## Metrics and KPIs
+
+### Key Performance Indicators
+- **Artifact Processing Rate**: artifacts/hour (target: 100)
+- **Processing Success Rate**: % (target: 95%)
+- **Average Processing Time**: seconds (target: <5s)
+- **Cache Hit Rate**: % (target: 80%)
+- **Index Query Performance**: ms (target: <100ms)
+- **Pipeline Throughput**: MB/hour (target: 1000)
+
+### Dashboard Data
+```python
+from src.measure_phase.metrics import MetricsCollector, KPIManager, DashboardDataGenerator
+
+# Initialize metrics system
+metrics = MetricsCollector()
+kpi_manager = KPIManager(metrics)
+dashboard = DashboardDataGenerator(metrics, kpi_manager)
+
+# Generate dashboard data
+dashboard_data = dashboard.generate_dashboard_data()
+```
+
+## Configuration
+
+### Environment Variables
+```bash
+# Database configuration
+DMAIC_DB_PATH="/path/to/artifacts.db"
+
+# Cache configuration  
+DMAIC_CACHE_SIZE=1000
+DMAIC_CACHE_MEMORY_MB=100
+DMAIC_CACHE_TTL=3600
+
+# Workflow configuration
+DMAIC_WORKSPACE="/path/to/workspace"
+DMAIC_GITHUB_REPO="https://github.com/user/repo.git"
+```
+
+### Custom Configuration
+```python
+# Custom ranking weights
+ranker = ArtifactRanker()
+ranker.ranking_weights.update({
+    'content_richness': 0.4,  # Increase content importance
+    'type_priority': 0.3      # Increase type priority
+})
+
+# Custom cache settings
+cache = PriorityCache(
+    max_size=2000,
+    max_memory_mb=200,
+    ttl_seconds=7200
+)
+```
+
+## Advanced Features
+
+### Custom Parsers
+```python
+from src.measure_phase.parser import BaseParser
+
+class CustomParser(BaseParser):
+    def __init__(self):
+        super().__init__()
+        self.supported_extensions = ['.custom']
+    
+    def parse(self, file_path: str) -> Dict[str, Any]:
+        # Custom parsing logic
+        return {"custom_data": "parsed"}
+    
+    def extract_text(self, file_path: str) -> str:
+        # Custom text extraction
+        return "extracted text"
+```
+
+### Custom [KEB] Processors
+```python
+from src.measure_phase.keb_interface import KEBProcessor
+
+class CustomKEBProcessor(KEBProcessor):
+    def process(self, input_data):
+        # Custom [KEB] processing
+        return processed_result
+    
+    def get_processor_info(self):
+        return {"name": "CustomProcessor", "version": "1.0"}
+
+# Register custom processor
+keb_adapter.register_processor("custom", CustomKEBProcessor())
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Import Errors**: Ensure all dependencies are installed
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+2. **Database Locked**: Close existing connections
+   ```python
+   indexer.close()  # Close indexer connection
+   ```
+
+3. **Memory Issues**: Reduce cache size or enable disk persistence
+   ```python
+   cache = PriorityCache(max_memory_mb=50)
+   cache.save_to_disk("cache_backup.pkl")
+   ```
+
+4. **Git Workflow Issues**: Check repository permissions and remote URL
+   ```python
+   status = workflow.get_sync_status()
+   print(status)
+   ```
+
+### Performance Optimization
+
+1. **Batch Processing**: Process multiple artifacts together
+2. **Selective Indexing**: Only index changed files
+3. **Cache Warming**: Pre-load frequently accessed artifacts
+4. **Database Optimization**: Regular VACUUM and ANALYZE operations
+
+## Contributing
+
+1. Follow the established architecture patterns
+2. Add comprehensive tests for new features
+3. Update documentation and type hints
+4. Ensure compatibility with all supported file types
+5. Test [KEB] pipeline integration thoroughly
+
+## License
+
+This DMAIC Measure Phase implementation is part of the larger DMAIC system and follows the same licensing terms.
