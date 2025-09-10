@@ -37,7 +37,7 @@ def extract_slides(pptx_path: Path, limit: int | None = None):
                     if any(t.lstrip().startswith(ch) for ch in ('-', '•', '*')):
                         bullets += 1
         title = texts[0] if texts else ''
-        is_title = bool(title) and len(title) < 120 and title.upper() == title[: len(title)].upper()
+        is_title = bool(title) and len(title) < 120 and title.isupper()
         bg = '#f0f8ff' if is_title else ('#ffffff' if bullets > 0 else '#fafafa')
         slides.append({
             'n': i + 1,

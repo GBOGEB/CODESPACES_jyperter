@@ -21,12 +21,12 @@ from pathlib import Path
 import subprocess
 import tempfile
 import zipfile
-from typing import Iterable, List
+from typing import Iterable
 
 
-def discover_zip_files(base_dirs: Iterable[str]) -> List[Path]:
+def discover_zip_files(base_dirs: Iterable[str]) -> list[Path]:
     """Return a sorted list of all ``.zip`` files under ``base_dirs``."""
-    paths: List[Path] = []
+    paths: list[Path] = []
     for base in base_dirs:
         paths.extend(Path(base).rglob("*.zip"))
     return sorted(paths)
