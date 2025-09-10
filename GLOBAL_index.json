@@ -1,0 +1,19 @@
+{
+  "directories": [
+    ".devcontainer",
+    ".github",
+    ".github/workflows",
+    "data",
+    "docs",
+    "notebooks",
+    "output",
+    "output/handover_final",
+    "scripts",
+    "src",
+    "src/master_doc_system",
+    "src/measure_phase",
+    "src/measure_phase/parser",
+    "tests",
+    "tests/measure_phase"
+  ]
+}
