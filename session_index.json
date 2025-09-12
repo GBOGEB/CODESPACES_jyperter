@@ -1,0 +1,9 @@
+{
+  "sessions": [
+    {
+      "id": "CURRENT_SESSION_YYYYMMDDThhmmssZ",
+      "title": "Chat History Indexing & KPIs",
+      "report": "reports/CURRENT_CHAT_REPORT.md"
+    }
+  ]
+}
