@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Handover Dashboard</title>
+<link rel="stylesheet" href="dashboard_assets/tailwind.min.css">
+<link rel="stylesheet" href="dashboard_assets/jstree.min.css">
+<style>
+  .fade {animation: fadeout 2s forwards;}
+  @keyframes fadeout {from{opacity:1;} to{opacity:0;}}
+</style>
+</head>
+<body class="p-4">
+<nav class="mb-4">
+  <h1 class="text-2xl font-bold">Handover Dashboard</h1>
+</nav>
+
+<section id="artefacts" class="mb-8">
+  <h2 class="text-xl font-semibold">Artefacts</h2>
+  <div id="artefact-tree"></div>
+</section>
+
+<section id="metrics" class="mb-8">
+  <h2 class="text-xl font-semibold">Metrics & KPIs</h2>
+  <div id="radar-chart" class="my-4"></div>
+  <div id="line-chart" class="my-4"></div>
+  <div id="violin-chart" class="my-4"></div>
+  <div id="waterfall-chart" class="my-4"></div>
+</section>
+
+<section id="dmaic" class="mb-8">
+  <h2 class="text-xl font-semibold">DMAIC Cycle</h2>
+  <div id="dmaic-cycle"></div>
+</section>
+
+<section id="agents" class="mb-8">
+  <h2 class="text-xl font-semibold">Agents</h2>
+  <button id="agent-loose" class="bg-blue-500 text-white px-4 py-2 m-1">Loose-Ends</button>
+  <button id="agent-open" class="bg-green-500 text-white px-4 py-2 m-1">Open</button>
+  <button id="agent-dementor" class="bg-red-500 text-white px-4 py-2 m-1">Dementor</button>
+  <div id="agent-output" class="mt-4"></div>
+</section>
+
+<section id="golden-thread" class="mb-8">
+  <h2 class="text-xl font-semibold">Golden Thread</h2>
+</section>
+
+<script src="dashboard_assets/jquery.min.js"></script>
+<script src="dashboard_assets/jstree.min.js"></script>
+<script src="dashboard_assets/plotly.min.js"></script>
+<script src="dashboard_assets/mermaid.min.js"></script>
+<script src="dashboard_assets/marked.min.js"></script>
+<script src="dashboard_assets/dashboard.js"></script>
+</body>
+</html>

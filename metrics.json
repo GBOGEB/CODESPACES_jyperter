@@ -1,0 +1,5 @@
+{
+  "metric_labels": ["Quality", "Speed", "Cost", "Satisfaction", "Scope"],
+  "baseline": [70, 60, 50, 65, 80],
+  "latest": [85, 75, 55, 80, 90]
+}
