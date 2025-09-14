@@ -1,0 +1,8 @@
+{
+  "master_tag": "MASTER_RTM_Rev0.0",
+  "rtm_json": "data/RTM_Master.json",
+  "sr_json": "data/SR_Master.json",
+  "dtm_json": "data/DTM_Master.json",
+  "batch_json": "data/Batch_New.json",
+  "export_root": "outputs"
+}
