@@ -1,0 +1,18 @@
+session_id: USER.PSV.S-HEADER.v3
+gas: helium
+gamma: 1.66
+R_spec_JkgK: 2078.6
+Kd: 0.90
+set_pressure_abs_bar: 1.50
+relieving_pressure_abs_bar: 1.65
+backpressure_super_abs_bar: 1.05
+flows_gs:
+  nominal: 3
+  maximum: 200
+design_pick:
+  seat_area_m2_min: 0.001689
+  seat_diameter_mm_min: 46.4
+  tailpipe_min_id:
+    L_le_20m: DN100
+    L_approx_30m: DN125
+notes: Subcritical flow at P2/P1 = 0.636 (>0.488 critical ratio).
