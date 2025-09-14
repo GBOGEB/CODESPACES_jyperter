@@ -1,0 +1,13 @@
+%% Mermaid updated to user constraints
+flowchart LR
+  U[[User Volume]] -->|PSV 1.50 bar(a)| DISCH{Discharge Manifold}
+  DISCH --> S[S Header (1.05 bar(a))]
+  DISCH --> B[B Header]
+  S --> LP[(LP Suction / Recovery)]
+  B --> LP
+  note1[[Seat ≥ 1.69e-3 m² (Ø ≥ 46.4 mm)]]
+  note2[[Tail-pipe: DN100 ≤20 m; DN125 ~30 m]]
+  note3[[Balanced-Bellows PSV]]
+  note1 --- DISCH
+  note2 --- S
+  note3 --- U
