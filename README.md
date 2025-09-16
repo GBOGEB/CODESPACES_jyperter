@@ -8,10 +8,7 @@ Everything you do here is contained within this one codespace. There is no repos
 
 ## ZIP Processing Pipeline
 
-The project includes `src/zip_pipeline.py`, a small utility for sequentially
-processing ZIP archives. For each archive it performs bytecode compilation
-(smoke test), an optional dry run, and integration tests via `pytest`. The
-original ZIP is deleted when processing succeeds.
+The project includes `src/zip_pipeline.py`, a small utility for sequentially processing ZIP archives. For each archive it performs bytecode compilation (smoke test), an optional dry run, and integration tests via `pytest`. The original ZIP is deleted when processing succeeds.
 
 Run the pipeline by supplying the directories to scan:
 
@@ -21,8 +18,7 @@ python -m src.zip_pipeline <dir1> <dir2> ...
 
 ## Slide Preview Generator
 
-Use `tools/extract_slide_previews.py` to create quick HTML previews of a PowerPoint deck.
-It writes three files to the chosen output directory:
+Use `tools/extract_slide_previews.py` to create quick HTML previews of a PowerPoint deck. It writes three files to the chosen output directory:
 
 - `slide_texts.json` – full text content for each slide
 - `slide_digital_twins.json` – compact summary and styling hints

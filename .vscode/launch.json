@@ -1,0 +1,28 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Attach to debugpy (orchestrator-managed)",
+      "type": "python",
+      "request": "attach",
+      "connect": {
+        "host": "127.0.0.1",
+        "port": 5678
+      },
+      "justMyCode": false
+    },
+    {
+      "name": "Launch orchestrator (no attach)",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/app/orchestrator.py",
+      "args": ["--run", "run_pipeline"]
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Run & Attach: run_pipeline",
+      "configurations": ["Launch orchestrator (no attach)", "Attach to debugpy (orchestrator-managed)"]
+    }
+  ]
+}

@@ -1,7 +1,24 @@
+# Core dependencies for DMAIC Measure Phase
+aiosqlite>=0.19.0
+fastapi>=0.104.0
 ipywidgets==8.1.2
+manifestly>=0.1.0
 matplotlib==3.8.4
+numpy>=1.24.0
 pandas==2.2.2
+pathlib>=1.0.1
+plotly>=5.17.0
+PyMuPDF>=1.23.0
+pytest>=7.4.0
+python-dateutil>=2.9.0
+python-docx>=0.8.11
+python-pptx==0.6.23
+pyyaml>=6.0.1
+requests>=2.31.0
+sqlalchemy>=2.0.0
 torch==2.7.1
 torchvision==0.21.0
 tqdm==4.66.4
-python-pptx==0.6.23
+uvicorn>=0.24.0
+vsdx>=0.5.15
+zipstream-ng>=1.7.0

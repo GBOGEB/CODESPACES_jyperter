@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 """Utilities for processing collections of ZIP archives.
 
 This module discovers ZIP files inside one or more base directories and

@@ -1,0 +1,54 @@
+{
+  "sections": [
+    {
+      "id": "SEC-08",
+      "title": "complete DMAIC loop (Define \u2192 Measure \u2192 Analyze \u2192 Improve \u2192 Control) with round-trip hooks.",
+      "file": "docs/sec_sections.md"
+    },
+    {
+      "id": "SEC-09",
+      "title": "artefact visibility + ranking + influence scores, both as a table and JSON graph.",
+      "file": "docs/sec_sections.md"
+    },
+    {
+      "id": "SEC-10",
+      "title": "human-readable YAML/MD artefacts: bios.yaml, kpi_template.yml, artefact_index.yml, and README excerpt.",
+      "file": "docs/sec_sections.md"
+    },
+    {
+      "id": "SEC-11",
+      "title": "patch & bundle scripts (patch_all.sh, patch_zip_userzip.sh) so you can spit out diffs and zips like a pro.",
+      "file": "docs/sec_sections.md"
+    },
+    {
+      "id": "SEC-12",
+      "title": "structured \u201cverbatim\u201d user input with scope + reduced summaries (structured_input.yaml).",
+      "file": "docs/sec_sections.md"
+    },
+    {
+      "id": "SEC-13",
+      "title": "smoke/regression tests (basic but real), so there\u2019s at least something to fail besides our hopes.",
+      "file": "docs/sec_sections.md"
+    },
+    {
+      "id": "SEC-14",
+      "title": "CD plan & expected outcomes (promotion gates, observability, reproducibility).",
+      "file": "docs/sec_sections.md"
+    },
+    {
+      "id": "SEC-15",
+      "title": "generic agent roles for orchestration (pipeline_orchestrator, kpi_tracker, baseline_promoter, report_generator).",
+      "file": "docs/sec_sections.md"
+    },
+    {
+      "id": "SEC-16",
+      "title": "dashboard wireframe schema (JSON) to feed a live UI later.",
+      "file": "docs/sec_sections.md"
+    },
+    {
+      "id": "SEC-17",
+      "title": "short handover statement, because someone will inevitably ask \u201cwhat is this?\u201d",
+      "file": "docs/sec_sections.md"
+    }
+  ]
+}
