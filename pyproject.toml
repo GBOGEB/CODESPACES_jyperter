@@ -29,39 +29,39 @@ classifiers = [
 ]
 
 dependencies = [
-    "vsdx>=0.5.15",
-    "python-docx>=0.8.11", 
-    "python-pptx>=0.6.21",
-    "PyMuPDF>=1.23.0",
-    "sqlalchemy>=2.0.0",
-    "fastapi>=0.104.0",
-    "uvicorn>=0.24.0",
-    "pandas>=2.1.0",
-    "numpy>=1.24.0",
-    "matplotlib>=3.7.0",
-    "plotly>=5.17.0",
-    "zipstream-ng>=1.7.0",
-    "manifestly>=0.1.0",
-    "aiosqlite>=0.19.0",
-    "pyyaml>=6.0.1",
-    "requests>=2.31.0",
+    "vsdx==0.5.19",
+    "python-docx==1.2.0", 
+    "python-pptx==1.0.2",
+    "PyMuPDF==1.26.4",
+    "sqlalchemy==2.0.43",
+    "fastapi==0.116.1",
+    "uvicorn==0.35.0",
+    "pandas==2.3.2",
+    "numpy==2.3.3",
+    "matplotlib==3.10.6",
+    "plotly==6.3.0",
+    "zipstream-ng==1.9.0",
+    "manifestly==0.2.4",
+    "aiosqlite==0.21.0",
+    "pyyaml==6.0.1",
+    "requests==2.31.0",
     "pywin32>=306; sys_platform == 'win32'",
-    "python-dateutil>=2.8.0",
+    "python-dateutil==2.9.0.post0",
     "pathlib2>=2.3.0; python_version < '3.4'",
 ]
 
 [project.optional-dependencies]
 dev = [
-    "pytest>=7.4.0",
+    "pytest==8.4.2",
     "pytest-cov>=4.1.0",
     "black>=23.0.0",
     "isort>=5.12.0",
-    "flake8>=6.0.0",
+    "flake8==7.1.1",
     "mypy>=1.5.0",
 ]
 
 test = [
-    "pytest>=7.4.0",
+    "pytest==8.4.2",
     "pytest-asyncio>=0.21.0",
     "pytest-mock>=3.11.0",
 ]
