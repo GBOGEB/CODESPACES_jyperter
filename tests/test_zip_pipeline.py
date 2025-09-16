@@ -1,5 +1,4 @@
 import zipfile
-from pathlib import Path
 
 import zip_pipeline
 

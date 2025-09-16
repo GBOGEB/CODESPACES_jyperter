@@ -1,3 +1,11 @@
 notebooks/data
 notebooks/cifar_net.pth
 .ipynb_checkpoints/
+
+# Ignore generated outputs and binary artefacts
+output/
+*.zip
+*.pptx
+*.pdf
+*.bin
+__pycache__/
