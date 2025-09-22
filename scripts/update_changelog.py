@@ -42,8 +42,11 @@ def main(req_id: str | None = None) -> None:
     except json.JSONDecodeError:
         print("Error: index.json contains invalid JSON.", file=sys.stderr)
         return
-    requirements = index_data["requirements"]
-
+    try:
+        requirements = index_data["requirements"]
+    except KeyError:
+        print("Error: 'requirements' key not found in index.json.", file=sys.stderr)
+        return
     if req_id:
         requirements = [r for r in requirements if r["id"] == req_id]
 
