@@ -4,4 +4,4 @@ set -euo pipefail
 
 git diff --binary > patch.diff
 zip -q patch.zip patch.diff
-rm patch.diff
+

@@ -1,0 +1,14 @@
+{
+  "id": "pipeline.orchestrate_simple",
+  "name": "pipeline: orchestrate-simple",
+  "group": "pipeline",
+  "tags": ["pipeline", "orchestrate", "master_input"],
+  "criticality": "M",
+  "entrypoint": "pwsh",
+  "args": ["ps-automation/src/Scripts/Invoke-Automation.ps1", "-Task", "orchestrate-simple", "-Mode", "{mode}"],
+  "preconditions": ["git:clean", "tool:pwsh7"],
+  "produces": ["artifacts/{BS}/orchestrate_simple/"],
+  "idempotent_hash": "{computed}",
+  "parallel_ok": false,
+  "timeout_s": 1800
+}

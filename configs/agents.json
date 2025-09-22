@@ -1,0 +1,32 @@
+{
+  "version": "1.1",
+  "agents": [
+    {
+      "id": "master_orchestrator",
+      "role": "orchestrator",
+      "children": ["ingest_agent", "analysis_agent", "report_agent"],
+      "contracts": ["R-1","R-2","R-3","R-4","R-5","R-6","R-7","R-8","R-9","R-10"]
+    },
+    {
+      "id": "ingest_agent",
+      "role": "data_ingest",
+      "depends_on": [],
+      "children": ["normalizer_agent"]
+    },
+    {
+      "id": "normalizer_agent",
+      "role": "etl_normalizer",
+      "depends_on": ["ingest_agent"]
+    },
+    {
+      "id": "analysis_agent",
+      "role": "compute_metrics",
+      "depends_on": ["normalizer_agent"]
+    },
+    {
+      "id": "report_agent",
+      "role": "documentation",
+      "depends_on": ["analysis_agent"]
+    }
+  ]
+}

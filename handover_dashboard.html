@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Handover Dashboard</title>
+  <link rel="stylesheet" href="dashboard_assets/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jstree@3.3.12/dist/themes/default/style.min.css">
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jstree@3.3.12/dist/jstree.min.js"></script>
+  <script>mermaid.initialize({startOnLoad:true});</script>
+</head>
+<body>
+  <nav>
+    <a href="#artefacts">Artefacts</a>
+    <a href="#metrics">Metrics & KPIs</a>
+    <a href="#dmaic">DMAIC Cycle</a>
+    <a href="#agents">Agents</a>
+    <a href="#golden-thread">Golden Thread</a>
+  </nav>
+
+  <section id="artefacts">
+    <h2>📂 Artefacts</h2>
+    <div id="artefact-index"></div>
+  </section>
+
+  <section id="metrics">
+    <h2>📈 Metrics & KPIs</h2>
+    <div id="violin" class="chart"></div>
+    <div id="waterfall" class="chart"></div>
+    <div id="trend" class="chart"></div>
+  </section>
+
+  <section id="dmaic">
+    <h2>🔄 DMAIC Cycle</h2>
+    <div id="radar" class="chart"></div>
+    <div class="mermaid">graph LR; Define-->Measure-->Analyze-->Improve-->Control-->Define;</div>
+  </section>
+
+  <section id="agents">
+    <h2>🤖 Agents</h2>
+    <button id="agent-loose" class="agent">Loose-Ends</button>
+    <button id="agent-open" class="agent">Open</button>
+    <button id="agent-dementor" class="agent">Dementor</button>
+    <div id="agent-output"></div>
+    <ul id="session-list"></ul>
+  </section>
+
+  <section id="golden-thread">
+    <h2>🧵 Golden Thread</h2>
+    <div id="golden-thread-table"></div>
+  </section>
+
+  <script src="dashboard_assets/dashboard.js"></script>
+</body>
+</html>
