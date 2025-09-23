@@ -6,6 +6,13 @@ __pycache__/
 *.pyc
 *.pyo
 *.xlsx
+*.xls
+*.xlsm
+*.csv
+*.docx
+*.pdf
+*.ppt
+*.pptx
 
 # Outlook archive management files
 outlook_exports/
