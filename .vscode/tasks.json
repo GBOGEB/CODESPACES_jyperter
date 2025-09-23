@@ -2,21 +2,22 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "REQ-01 changelog",
+      "label": "Run: run_pipeline",
       "type": "shell",
-      "command": "python",
-      "args": ["scripts/update_changelog.py", "REQ-01"],
-      "group": "none",
-      "presentation": {"reveal": "always"},
+      "command": "python app/orchestrator.py --run run_pipeline",
       "problemMatcher": []
     },
     {
-      "label": "REQ-02 changelog",
+      "label": "Run: index_repo",
       "type": "shell",
-      "command": "python",
-      "args": ["scripts/update_changelog.py", "REQ-02"],
-      "group": "none",
-      "presentation": {"reveal": "always"},
+      "command": "python app/orchestrator.py --run index_repo",
+      "problemMatcher": []
+    },
+    {
+      "label": "Debug: run_pipeline",
+      "type": "shell",
+      "command": "python app/orchestrator.py --debug run_pipeline",
+
       "problemMatcher": []
     }
   ]

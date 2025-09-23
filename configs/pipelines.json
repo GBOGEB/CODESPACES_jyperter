@@ -1,0 +1,25 @@
+{
+  "$schema": "https://example.local/schemas/pipelines.schema.json",
+  "version": "1.1",
+  "python": "{PYTHON_EXE}",
+  "defaults": {
+    "workdir": ".",
+    "env": {},
+    "debug_host": "127.0.0.1",
+    "debug_port_start": 5678
+  },
+  "pipelines": [
+    {
+      "name": "run_pipeline",
+      "command": "python app/run_pipeline.py --profile default",
+      "workdir": ".",
+      "debug_enabled": true
+    },
+    {
+      "name": "index_repo",
+      "command": "python app/index_repo.py",
+      "workdir": ".",
+      "debug_enabled": false
+    }
+  ]
+}

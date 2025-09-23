@@ -30,7 +30,7 @@
         "handover": ["handover_playbook.md"],
         "architecture": ["roundtrip_diagram.ascii"],
         "operational": ["python pipeline/main.py --roundtrip"],
-        "user_requirement": ["Roundtrip fidelity >=99%"],
+        "user_requirement": ["Roundtrip fidelity ≥99%"],
         "inputs": ["MASTER.docx", "cfg.toml"],
         "outputs": ["roundtrip_report.md", "delta.csv"],
         "canvas": true
@@ -55,7 +55,7 @@
     },
     {
       "index": "C-004",
-      "short_title": "Rationale in RFOs Belgie",
+      "short_title": "Rationale in RFOs België",
       "descriptive_title": "Provide rationale structure for public procurement requirements",
       "date": "2025-03-28",
       "groups": ["SoR", "ADR"],
@@ -64,7 +64,7 @@
         "handover": ["rfo_guidance.md"],
         "architecture": ["policy_flow.ascii"],
         "operational": ["rationale_lint.py"],
-        "user_requirement": ["Clause->Rationale mapping"],
+        "user_requirement": ["Clause→Rationale mapping"],
         "inputs": ["RFO clauses (BE)"],
         "outputs": ["rationale_bank.md"],
         "canvas": false
@@ -125,6 +125,6 @@
   "system_context": {
     "qcell_ui": "UI touchpoint for ops and review",
     "acb_dist": "Accelerator Cryogenic Backbone (distribution)",
-    "golden_thread": "MASTER.docx -> RTM -> Artefacts -> V&V"
+    "golden_thread": "MASTER.docx → RTM → Artefacts → V&V"
   }
 }

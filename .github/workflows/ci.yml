@@ -20,3 +20,12 @@ jobs:
           pip install -r requirements-dev.txt
       - name: Run tests
         run: make test
+      - name: Check SEC index
+        run: python scripts/build_sec_index.py --check
+      - name: Build patch bundle
+        run: bash scripts/patch_all.sh
+      - name: Upload patch bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: patch
+          path: patch.zip
