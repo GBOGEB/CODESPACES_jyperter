@@ -81,7 +81,7 @@ function renderDmaic() {
     'Improve':'',
     'Control':''
   };
-  document.getElementById('dmaic-cycle').on('plotly_click', function(evt){
+  document.getElementById('dmaic-cycle').addEventListener('plotly_click', function(evt){
     const stage = evt.points[0].theta;
     if (links[stage]) { window.open(links[stage]); }
   });
