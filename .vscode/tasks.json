@@ -17,6 +17,7 @@
       "label": "Debug: run_pipeline",
       "type": "shell",
       "command": "python app/orchestrator.py --debug run_pipeline",
+
       "problemMatcher": []
     }
   ]

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Requirement Traceability Dashboard</title>
+  <style>
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ccc; padding: 4px; }
+    th { background: #f0f0f0; }
+  </style>
+</head>
+<body>
+  <h1>Requirement Traceability Dashboard</h1>
+  <div id="content">Loading...</div>
+  <script>
+    fetch('../index.json')
+      .then(response => response.json())
+      .then(data => {
+        const container = document.getElementById('content');
+        const table = document.createElement('table');
+        const header = document.createElement('tr');
+        ['ID', 'Title', 'Dependencies', 'Artifacts'].forEach(text => {
+          const th = document.createElement('th');
+          th.textContent = text;
+          header.appendChild(th);
+        });
+        table.appendChild(header);
+        data.requirements.forEach(req => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `<td>${req.id}</td>` +
+                         `<td>${req.title}</td>` +
+                         `<td>${(req.dependencies || []).join(', ')}</td>` +
+                         `<td>${(req.artifacts || []).join('<br>')}</td>`;
+          table.appendChild(tr);
+        });
+        container.innerHTML = '';
+        container.appendChild(table);
+      })
+      .catch(err => {
+        document.getElementById('content').textContent = 'Failed to load index.json';
+        console.error(err);
+      });
+  </script>
+</body>
+</html>
