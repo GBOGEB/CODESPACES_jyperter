@@ -1,0 +1,27 @@
+{
+  "requirements": [
+    {
+      "id": "REQ-01",
+      "title": "Artifact indexing system",
+      "section": "SEC-07",
+      "dependencies": [],
+      "dependents": ["REQ-02"],
+      "artifacts": [
+        "src/measure_phase/index.py",
+        "Makefile"
+      ]
+    },
+    {
+      "id": "REQ-02",
+      "title": "Requirement dashboard and changelog",
+      "section": "SEC-07",
+      "dependencies": ["REQ-01"],
+      "dependents": [],
+      "artifacts": [
+        "docs/dashboard.html",
+        "scripts/update_changelog.py",
+        ".github/workflows/req-changelog.yml"
+      ]
+    }
+  ]
+}

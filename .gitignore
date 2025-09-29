@@ -6,3 +6,34 @@ __pycache__/
 *.pyc
 *.pyo
 *.xlsx
+*.xls
+*.xlsm
+*.csv
+*.docx
+*.pdf
+*.ppt
+*.pptx
+
+# Outlook archive management files
+outlook_exports/
+pst_files/
+email_archives/
+*.log
+*.pst
+*.pst_data/
+*.index
+
+# Build and distribution
+build/
+dist/
+*.egg-info/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temporary files
+.DS_Store
+Thumbs.db

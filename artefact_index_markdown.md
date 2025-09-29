@@ -1,4 +1,9 @@
+
+# Artefact Index
+
 | Requirement ID | Artefact ID | File |
-| -------------- | ----------- | ---- |
-| R1 | A1 | handover/README.md |
-| R2 | A2 | reports/CURRENT_CHAT_REPORT.md |
+| --- | --- | --- |
+| RQ-1 | AF-1 | reports/CURRENT_CHAT_REPORT.md |
+| RQ-2 | AF-2 | metrics.json |
+| RQ-3 | AF-3 | session_index.json |
+

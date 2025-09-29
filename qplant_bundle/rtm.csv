@@ -1,0 +1,13 @@
+ReqID,Title,Method,Evidence/Deliverable,Phase,Owner
+REQ_01,Cost Control Strategy Stack,Analysis,Cost Control Plan + VE/CBA templates,Preliminary; Conceptual; Detailed,App
+REQ_02,Cost Estimate as Baseline,Analysis,Cost Model workbook + BoE,Preliminary; Conceptual,App
+REQ_03,Lifecycle Optioning & Stage Gates,Analysis,Options register + priced alternates,Preliminary->Conceptual,App
+REQ_04,Big-Ticket / Long-Lead Design Freeze,Inspection,Freeze list + spec packs,Conceptual,App
+REQ_05,Interface Register with Cost Allocation,Analysis,Interface Register matrix,Preliminary->Detailed,App/Client
+REQ_06,FTE Resource Plan,Analysis,FTE plan,Preliminary (maintained monthly),App
+REQ_07,Construction & Qualification Breakdown,Inspection,IQ/OQ packs + bench test reports,Construction,App
+REQ_08,Transport Plan,Inspection,Transport dossier,Pre-Transport,App
+REQ_09,Installation & Utilities Hook-Up,Inspection,As-installed survey + power-quality report,Installation,App
+REQ_10,Controls & IT Integration,Test,ICDs + network diagrams + cyber checklist,Installation->Commissioning,App
+REQ_11,FAT/SAT & Performance Acceptance,Test,FAT/SAT procedures & reports + NCR log,Commissioning,App/Client
+REQ_12,Operations Readiness & Handover,Inspection,ORR checklist + training records + as-builts,Operational Readiness,App

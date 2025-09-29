@@ -1,0 +1,23 @@
+name: Requirement Changelog
+
+on:
+  push:
+    branches: ["main", "master"]
+
+jobs:
+  changelog:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: Generate changelog
+        run: python scripts/update_changelog.py
+      - name: Commit changelog
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Update requirement changelog
+          file_pattern: docs/changelog/*.md

@@ -1,0 +1,11 @@
+{
+  "stakeholders": [
+    {"SR.#": 0, "insert_at": 1, "Title": "Owner Requirements", "Owner": "AFA", "Role": "Sponsor", "Rationale": "Contractual mandate"}
+  ],
+  "requirements": [
+    {"Req.#": 0, "insert_at": 1, "Type": "System", "Category": "Reliability", "Title": "Safety Interlocks", "Requirement": "Activate within 100 ms", "Measurability": "Timed test", "Verification": "Response test", "Validation": "Field demo", "Parent SR": 1, "Del.#": ""}
+  ],
+  "deliverables": [
+    {"Del.#": "Del.1", "Req.#": 1, "Title": "Interlock Test Report", "Evidence": "Test logs", "Verification": "Timed activation", "Validation": "Site acceptance"}
+  ]
+}

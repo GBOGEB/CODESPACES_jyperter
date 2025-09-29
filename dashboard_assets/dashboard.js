@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', function () {
   // Load metrics and render charts
   fetch('metrics.json').then(r => r.json()).then(drawCharts);
@@ -86,3 +87,5 @@ function renderDmaic() {
     if (links[stage]) { window.open(links[stage]); }
   });
 }
+
+

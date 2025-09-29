@@ -1,5 +1,28 @@
 {
-  "metric_labels": ["Quality", "Speed", "Cost", "Satisfaction", "Scope"],
-  "baseline": [70, 60, 50, 65, 80],
-  "latest": [85, 75, 55, 80, 90]
+
+  "baseline": {
+    "dmaic": {
+      "Define": 80,
+      "Measure": 65,
+      "Analyze": 90,
+      "Improve": 70,
+      "Control": 85
+    },
+    "distribution": [80,65,90,70,85]
+  },
+  "latest": {
+    "dmaic": {
+      "Define": 85,
+      "Measure": 70,
+      "Analyze": 92,
+      "Improve": 75,
+      "Control": 88
+    },
+    "distribution": [85,70,92,75,88]
+  },
+  "trend": {
+    "dates": ["2024-01-01","2024-02-01","2024-03-01","2024-04-01","2024-05-01"],
+    "values": [60,65,70,80,90]
+  }
+
 }

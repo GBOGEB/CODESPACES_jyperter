@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate a JSON index of all directories in the repository."""
+"""Generate a JSON index of repository directories and pipeline sections."""
 
 from __future__ import annotations
 
@@ -7,7 +7,20 @@ import argparse
 import json
 from pathlib import Path
 
-EXCLUDE = {'.git', '__pycache__'}
+EXCLUDE = {'.git', '__pycache__', '.pytest_cache'}
+
+# Static section table used for high level project tracking.  The IDs mirror
+# the "SEC-*" labels referenced in design discussions and provide a minimal
+# status field that tooling can inspect or update.
+SECTIONS = [
+    {"id": "SEC-01", "title": "Execution Flow Diagram", "status": "planned"},
+    {"id": "SEC-02", "title": "Makefile and VSCode Tasking", "status": "planned"},
+    {"id": "SEC-03", "title": "Recursive Model", "status": "planned"},
+    {"id": "SEC-04", "title": "Artefact Structure", "status": "planned"},
+    {"id": "SEC-05", "title": "Patch and ZIP Bundles", "status": "planned"},
+    {"id": "SEC-06", "title": "GitHub Workflow Steps", "status": "planned"},
+    {"id": "SEC-07", "title": "Semantic Tracking Spec", "status": "planned"},
+]
 
 
 def list_dirs(root: Path) -> list[str]:
@@ -29,8 +42,14 @@ def list_dirs(root: Path) -> list[str]:
 
 
 def build_index(root: Path) -> dict[str, list[str]]:
-    """Build index data structure for *root*."""
-    return {"directories": list_dirs(root)}
+    """Build index data structure for *root*.
+
+    The resulting mapping contains both the directory listing and an initial
+    set of section descriptors used for traceability across documentation and
+    tooling.
+    """
+
+    return {"directories": list_dirs(root), "sections": SECTIONS}
 
 
 def main() -> int:
