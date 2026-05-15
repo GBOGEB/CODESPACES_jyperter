@@ -12,6 +12,7 @@ Usage:
     --limit 20
 """
 import argparse
+import html
 import json
 from pathlib import Path
 
@@ -74,9 +75,9 @@ def write_html_preview(slides: list[dict], out_html: Path):
         parts.append("<div class='card' style='background:{}'>".format(bg))
         parts.append("<div class='meta'><span class='num'>#{} </span> • shapes:{} • bullets:{}</div>".format(s['n'], s['shape_count'], s['bullets']))
         if title:
-            parts.append("<h3 class='title'>{}</h3>".format(title[:180]))
+            parts.append("<h3 class='title'>{}</h3>".format(html.escape(title[:180])))
         for t in texts[1:5]:
-            parts.append("<div class='para'>{}</div>".format(t[:220]))
+            parts.append("<div class='para'>{}</div>".format(html.escape(t[:220])))
         parts.append("</div>")
     parts.append("</div></body></html>")
     out_html.write_text("\n".join(parts), encoding='utf-8')
