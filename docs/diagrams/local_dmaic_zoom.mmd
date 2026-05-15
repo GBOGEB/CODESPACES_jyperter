@@ -1,0 +1,11 @@
+flowchart TB
+  L1[BLOCK_020→040 LOCAL DMAIC • ENTRY] --> L2{Trigger}
+  L2 -->|test| L3[TEST: run notebooks (8001)\nvalidate artefacts\nwrite test_report.json]
+  L2 -->|debug| L4[DEBUG: containerized repro (9001)\ncollect logs\ncreate incident.md]
+  L2 -->|refactor| L5[REFACTOR: agent(7001)\napply patches\nopen PR with diff]
+  L3 --> L6[Update metrics • pass/fail • duration]
+  L4 --> L6
+  L5 --> L6
+  L6 --> L7{Gate}
+  L7 -->|pass| L8[Emit events → TELEMETRY]
+  L7 -->|fail| L9[Retry (exp backoff) or route to CLOUD]
