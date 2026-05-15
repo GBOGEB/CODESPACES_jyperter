@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 
 def main() -> None:
+    """Write a small metrics file from the supplied global index."""
     ap = argparse.ArgumentParser()
     ap.add_argument("--index", required=True)
     ap.add_argument("--out", default="metrics/metrics.json")

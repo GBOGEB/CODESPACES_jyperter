@@ -9,6 +9,7 @@ def file_hash(p: Path) -> str:
     return hashlib.sha256(p.read_bytes()).hexdigest()
 
 def main() -> None:
+    """Refresh artifact hashes stored in the supplied global index file."""
     ap = argparse.ArgumentParser()
     ap.add_argument("--index", required=True)
     args = ap.parse_args()

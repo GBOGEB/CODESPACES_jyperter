@@ -7,6 +7,7 @@ import shutil
 from pathlib import Path
 
 def main() -> None:
+    """Copy Markdown documents into a flat output directory."""
     ap = argparse.ArgumentParser()
     ap.add_argument("--src", default="docs")
     ap.add_argument("--out", default="out")

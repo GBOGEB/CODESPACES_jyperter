@@ -7,9 +7,10 @@ from pathlib import Path
 def file_hash(p: Path) -> str:
     return hashlib.sha256(p.read_bytes()).hexdigest()
 
+
 def main() -> None:
+    """Exit nonzero when any indexed artifact hash differs from disk."""
     ap = argparse.ArgumentParser()
-    ap.add_argument("--mode", choices=["in", "out", "both"], default="both")
     ap.add_argument("--index", required=True)
     args = ap.parse_args()
 
@@ -28,6 +29,7 @@ def main() -> None:
             print(f"[DIFF] {path} hash changed")
             had_diff = True
     raise SystemExit(1 if had_diff else 0)
+
 
 if __name__ == "__main__":
     main()

@@ -18,11 +18,12 @@ from pathlib import Path
 
 try:
     from pptx import Presentation
-except Exception:
-    raise SystemExit("python-pptx is required. pip install python-pptx")
+except ImportError as exc:
+    raise SystemExit("python-pptx is required. pip install python-pptx") from exc
 
 
 def extract_slides(pptx_path: Path, limit: int | None = None):
+    """Return extracted text, counts, and style hints for each slide."""
     prs = Presentation(str(pptx_path))
     slides = []
     all_slides = list(prs.slides)
@@ -54,6 +55,7 @@ def extract_slides(pptx_path: Path, limit: int | None = None):
 
 
 def write_html_preview(slides: list[dict], out_html: Path):
+    """Write a small HTML preview for extracted slide content."""
     css = """
     <style>
       body{font-family:Arial,Helvetica,sans-serif;background:#111;color:#eee;margin:0;padding:24px}
