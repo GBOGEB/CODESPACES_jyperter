@@ -13,6 +13,8 @@ __pycache__/
 *.pdf
 *.ppt
 *.pptx
+*.bin
+*.zip
 
 # Outlook archive management files
 outlook_exports/

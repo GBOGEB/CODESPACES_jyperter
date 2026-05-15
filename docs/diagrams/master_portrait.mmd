@@ -1,0 +1,12 @@
+flowchart TB
+  A[BLOCK_000 • INPUT SOURCES (KEN)\nMASTER.docx • RTM.xlsx • GLOBAL_index.json\nSession artefacts • External regs] --> B
+  B[BLOCK_010 • RECURSIVE BUILD ORCHESTRATOR (Codex ≈ MCB)\nCross-ref baseline • Decide Local/Cloud • Safe-state+Retry] --> C
+  B --> D
+  C[BLOCK_020 • LOCAL EXEC\nvenv • Spyder • Jupyter(8001) • Docker(9001) • DMAIC(7001)]
+  D[BLOCK_030 • CLOUD EXEC\nCodex batch • GitHub Actions • Heavy runs • Auto patch/PR]
+  C --> E
+  D --> E
+  E[BLOCK_040 • DMAIC LOOPS\nLOCAL: test/debug/refactor • GLOBAL: coverage/stability]
+  E --> F[BLOCK_050 • TELEMETRY & LOGGING\nmetrics.csv/json • run logs • artefact hashes]
+  F --> G[BLOCK_060 • CI/CD HOOKS\nsmoke-test • recursive-build • export-docs • preview-diff]
+  G --> H[BLOCK_070 • BASELINE UPDATE\nUpdate GLOBAL_index.json & index.json\nTag BASELINE_<date>_<iter>]
