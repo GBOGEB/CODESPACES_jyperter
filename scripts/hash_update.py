@@ -25,12 +25,15 @@ def file_hash(p: Path) -> str:
 def _refresh_index(path: Path, hash_map: dict[str, str]) -> None:
     """Rewrite *path* with updated hashes from *hash_map* (id -> new hash)."""
     idx = json.loads(path.read_text(encoding="utf-8"))
+    changed = False
     for art in idx.get("artefacts", []):
         new_hash = hash_map.get(art.get("id", ""))
-        if new_hash is not None:
+        if new_hash is not None and art.get("hash") != new_hash:
             art["hash"] = new_hash
-    path.write_text(json.dumps(idx, indent=2), encoding="utf-8")
-    print("UPDATED", path)
+            changed = True
+    if changed:
+        path.write_text(json.dumps(idx, indent=2), encoding="utf-8")
+        print("UPDATED", path)
 
 
 def main() -> None:
