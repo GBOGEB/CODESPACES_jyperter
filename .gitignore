@@ -39,3 +39,6 @@ dist/
 # Temporary files
 .DS_Store
 Thumbs.db
+
+# Generated metrics (produced by scripts/recursive_build.py)
+metrics/generated_metrics.json

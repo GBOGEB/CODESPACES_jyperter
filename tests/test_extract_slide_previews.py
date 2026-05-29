@@ -30,7 +30,7 @@ def test_extract_and_preview(tmp_path):
     html_path = tmp_path / "preview.html"
     write_html_preview(slides, html_path)
     assert html_path.exists()
-    content = html_path.read_text()
+    content = html_path.read_text(encoding='utf-8')
     assert "Slide Preview" in content
     assert "<script>" not in content
     assert "&lt;script&gt;TITLE&lt;/script&gt;" in content
