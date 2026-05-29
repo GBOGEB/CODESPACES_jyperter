@@ -14,6 +14,7 @@ Usage:
 import argparse
 import html
 import json
+import re
 from pathlib import Path
 
 try:
@@ -39,6 +40,11 @@ def extract_slides(pptx_path: Path, limit: int | None = None):
                     if any(t.lstrip().startswith(ch) for ch in ('-', '•', '*')):
                         bullets += 1
         title = texts[0] if texts else ''
+        # NOTE: `isupper()` returns False for strings with no cased characters
+        # (e.g. all-digit or all-punctuation titles), so some legitimate title
+        # slides may be styled as body slides. This is an intentional rough
+        # heuristic; use placeholder_format.type from python-pptx for stricter
+        # detection if needed.
         is_title = bool(title) and len(title) < 120 and title.isupper()
         bg = '#f0f8ff' if is_title else ('#ffffff' if bullets > 0 else '#fafafa')
         slides.append({
@@ -52,6 +58,15 @@ def extract_slides(pptx_path: Path, limit: int | None = None):
             },
         })
     return slides
+
+
+_HEX_COLOR_RE = re.compile(r'^#[0-9a-fA-F]{3}(?:[0-9a-fA-F]{3})?$')
+_FALLBACK_BG = '#ffffff'
+
+
+def _safe_bg(color: str) -> str:
+    """Return *color* if it matches a hex-color literal, else a safe fallback."""
+    return color if _HEX_COLOR_RE.match(color) else _FALLBACK_BG
 
 
 def write_html_preview(slides: list[dict], out_html: Path):
@@ -71,7 +86,7 @@ def write_html_preview(slides: list[dict], out_html: Path):
     parts.append("<h2>Slide Preview (first {} slides)</h2>".format(len(slides)))
     parts.append("<div class='deck'>")
     for s in slides:
-        bg = s.get('style_hint', {}).get('bg', '#ffffff')
+        bg = _safe_bg(s.get('style_hint', {}).get('bg', _FALLBACK_BG))
         texts = s.get('texts', [])
         title = texts[0] if texts else ''
         parts.append("<div class='card' style='background:{}'>".format(bg))
