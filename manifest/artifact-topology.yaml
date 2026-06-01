@@ -1,0 +1,33 @@
+# Artifact topology for GBOGEB/anthropic (custodian / governance layer).
+# Companion to patches/2026-06-01_artifact-federation-refactor.patch.md.
+# The patch file's Embedded Manifest is the canonical source of truth; this
+# file mirrors it for tooling that consumes a standalone manifest.
+version: 1
+repository: GBOGEB/anthropic
+repository_id: 1255640890
+patch_version: v0.1.0
+patch_date: 2026-06-01
+patch_type: architecture/artifact-governance/handover
+output_mode: single-file
+constraints:
+  allowed:
+    - depth-movement
+    - add-manifests
+    - add-packaging
+  not_allowed:
+    - cross-repo-semantic-move
+    - conceptual-reassignment-without-review
+    - splice-repo-history
+frozen_files:
+  - README
+  - ADR
+  - CHANGELOG
+artifact_classes:
+  - schema
+  - parser
+  - runtime
+  - policy
+  - taxonomy
+  - federation-contract
+  - governance
+moves: []

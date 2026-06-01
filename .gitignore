@@ -42,3 +42,7 @@ Thumbs.db
 
 # Generated metrics (produced by scripts/recursive_build.py)
 metrics/generated_metrics.json
+
+# Generated patch handover bundles (produced by scripts/package_patch.sh)
+handover/bundle/
+handover/bundle.zip
