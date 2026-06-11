@@ -1,0 +1,26 @@
+{
+  "section": "diagrams",
+  "artefacts": [
+    {
+      "id": "ARTF_20250910_0001__BLOCK_010__MASTER_PORTRAIT",
+      "path": "docs/diagrams/master_portrait.mmd",
+      "block": "BLOCK_010",
+      "type": "diagram/mermaid",
+      "hash": "340f1e549f4789013b27398958e646cfa5505299c91dbef4fdd980e5df0d880c"
+    },
+    {
+      "id": "ARTF_20250910_0002__BLOCK_010__MASTER_LANDSCAPE",
+      "path": "docs/diagrams/master_landscape.mmd",
+      "block": "BLOCK_010",
+      "type": "diagram/mermaid",
+      "hash": "21a53bfd0fc19ce1d9aea391367bc15c6cde9e86a5f444b0537de9413580a96e"
+    },
+    {
+      "id": "ARTF_20250910_0003__BLOCK_040_Z01__LOCAL_DMAIC_ZOOM",
+      "path": "docs/diagrams/local_dmaic_zoom.mmd",
+      "block": "BLOCK_040_Z01",
+      "type": "diagram/mermaid",
+      "hash": "a6b661bae9d7c8b3d6793e3f1f340e63428fb6b26a4ab1a413589e720bb4e105"
+    }
+  ]
+}

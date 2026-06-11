@@ -1,0 +1,6 @@
+name,current,target,owner,block
+requirement_coverage,0.82,0.95,DMAIC agent,BLOCK_040
+reproducibility,0.85,1.0,recursive agent,BLOCK_040
+error_rate,0.06,0.02,self_smoke,BLOCK_040
+patch_integration,0.40,0.90,refactor agent,BLOCK_040
+vector_stability,0.75,0.95,global_dmaic,BLOCK_040

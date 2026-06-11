@@ -1,0 +1,9 @@
+{
+  "kpis": [
+    {"name": "requirement_coverage", "current": 0.82, "target": 0.95, "owner": "DMAIC agent", "block": "BLOCK_040"},
+    {"name": "reproducibility", "current": 0.85, "target": 1.0, "owner": "recursive agent", "block": "BLOCK_040"},
+    {"name": "error_rate", "current": 0.06, "target": 0.02, "owner": "self_smoke", "block": "BLOCK_040"},
+    {"name": "patch_integration", "current": 0.40, "target": 0.90, "owner": "refactor agent", "block": "BLOCK_040"},
+    {"name": "vector_stability", "current": 0.75, "target": 0.95, "owner": "global_dmaic", "block": "BLOCK_040"}
+  ]
+}
