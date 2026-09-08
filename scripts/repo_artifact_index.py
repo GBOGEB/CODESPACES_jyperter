@@ -5,9 +5,9 @@ Outputs:
   triage/repo_index/ARTIFACT_INDEX.yaml  - grouped by artifact type, paths alphabetical
   triage/repo_index/FILE_INDEX.tsv       - flat grep-friendly inventory
 
-Search:
+Search examples:
   python scripts/repo_artifact_index.py --grep QPLANT
-  python scripts/repo_artifact_index.py --grep "ALAT|compliance" --regex
+  python scripts/repo_artifact_index.py --grep "ALAT|compliance" --regex --scope CORE
 """
 from __future__ import annotations
 
@@ -26,6 +26,12 @@ TSV_PATH = OUT_DIR / "FILE_INDEX.tsv"
 GENERATED = {
     "triage/repo_index/ARTIFACT_INDEX.yaml",
     "triage/repo_index/FILE_INDEX.tsv",
+}
+SCOPES = ("CORE", "ENVIRONMENT_VENDOR", "ARCHIVE_BACKUP", "GENERATED_OUTPUT")
+ENVIRONMENT_ROOTS = {"venv", ".venv", "node_modules", "vendor", "site-packages"}
+ARCHIVE_ROOTS = {"archive", "archives", "backup", "backups"}
+OUTPUT_ROOTS = {
+    "build", "dist", "output", "outputs", "generated", "metrics", ".gui_runs", ".ndjson"
 }
 TEXT_EXTENSIONS = {
     ".bat", ".c", ".cfg", ".conf", ".cpp", ".css", ".csv", ".env", ".h",
@@ -82,6 +88,20 @@ def artifact_type(path: str, mode: str) -> str:
     return TYPE_NAMES.get(suffix, suffix[1:].upper() if suffix else "No extension")
 
 
+def artifact_scope(path: str) -> str:
+    p = Path(path)
+    parts = [part.casefold() for part in p.parts]
+    first = parts[0] if parts else ""
+    name = p.name.casefold()
+    if first in ENVIRONMENT_ROOTS or any(part in {"site-packages", "node_modules"} for part in parts):
+        return "ENVIRONMENT_VENDOR"
+    if first in ARCHIVE_ROOTS or ".backup_" in name or name.endswith((".bak", ".bak2", ".old", ".orig")):
+        return "ARCHIVE_BACKUP"
+    if first in OUTPUT_ROOTS or "/generated/" in f"/{path.casefold()}/":
+        return "GENERATED_OUTPUT"
+    return "CORE"
+
+
 def sha256_file(path: Path) -> str:
     h = hashlib.sha256()
     with path.open("rb") as handle:
@@ -113,6 +133,7 @@ def build_records() -> list[dict[str, object]]:
         records.append({
             "path": rel,
             "type": artifact_type(rel, mode),
+            "scope": artifact_scope(rel),
             "size_bytes": size,
             "sha256": digest,
             "git_object": git_sha,
@@ -124,21 +145,33 @@ def build_records() -> list[dict[str, object]]:
 
 def render_yaml(records: list[dict[str, object]]) -> str:
     groups: dict[str, list[dict[str, object]]] = defaultdict(list)
+    scopes: dict[str, list[dict[str, object]]] = defaultdict(list)
     for row in records:
         groups[str(row["type"])].append(row)
+        scopes[str(row["scope"])].append(row)
     source_sha = run_git("rev-parse", "HEAD")
     repo = run_git("config", "--get", "remote.origin.url") or "unknown"
     lines = [
-        "schema: triage-repo-artifact-index/v0.1",
+        "schema: triage-repo-artifact-index/v0.2",
         f"repository: {yaml_quote(repo)}",
         f"indexed_source_sha: {source_sha}",
         f"artifact_count: {len(records)}",
         f"total_size_bytes: {sum(int(r['size_bytes']) for r in records)}",
         "ordering: artifact_type_then_path_casefold",
+        "scope_summary:",
+    ]
+    for scope in SCOPES:
+        rows = scopes.get(scope, [])
+        lines.extend([
+            f"  {scope}:",
+            f"    count: {len(rows)}",
+            f"    total_size_bytes: {sum(int(r['size_bytes']) for r in rows)}",
+        ])
+    lines.extend([
         "generated_files_excluded:",
         *[f"  - {yaml_quote(p)}" for p in sorted(GENERATED, key=str.casefold)],
         "artifact_types:",
-    ]
+    ])
     for type_name in sorted(groups, key=str.casefold):
         rows = sorted(groups[type_name], key=lambda r: str(r["path"]).casefold())
         lines.extend([
@@ -150,6 +183,7 @@ def render_yaml(records: list[dict[str, object]]) -> str:
         for row in rows:
             lines.extend([
                 f"      - path: {yaml_quote(str(row['path']))}",
+                f"        scope: {row['scope']}",
                 f"        kind: {row['kind']}",
                 f"        size_bytes: {row['size_bytes']}",
                 f"        sha256: {yaml_quote(str(row['sha256']))}",
@@ -160,21 +194,24 @@ def render_yaml(records: list[dict[str, object]]) -> str:
 
 
 def render_tsv(records: list[dict[str, object]]) -> str:
-    header = "type\tpath\tkind\tsize_bytes\tsha256\tgit_object\ttext_searchable\n"
+    header = "type\tscope\tpath\tkind\tsize_bytes\tsha256\tgit_object\ttext_searchable\n"
     rows = []
     for row in sorted(records, key=lambda r: (str(r["type"]).casefold(), str(r["path"]).casefold())):
         rows.append("\t".join([
-            str(row["type"]), str(row["path"]), str(row["kind"]), str(row["size_bytes"]),
-            str(row["sha256"]), str(row["git_object"]), "1" if row["text_searchable"] else "0",
+            str(row["type"]), str(row["scope"]), str(row["path"]), str(row["kind"]),
+            str(row["size_bytes"]), str(row["sha256"]), str(row["git_object"]),
+            "1" if row["text_searchable"] else "0",
         ]))
     return header + "\n".join(rows) + "\n"
 
 
-def grep_repo(pattern: str, regex: bool, case_sensitive: bool, max_matches: int) -> int:
+def grep_repo(pattern: str, regex: bool, case_sensitive: bool, max_matches: int, scope: str | None) -> int:
     flags = 0 if case_sensitive else re.IGNORECASE
     expr = re.compile(pattern if regex else re.escape(pattern), flags)
     matches = 0
     for row in build_records():
+        if scope and row["scope"] != scope:
+            continue
         if not row["text_searchable"]:
             continue
         path = ROOT / str(row["path"])
@@ -184,7 +221,7 @@ def grep_repo(pattern: str, regex: bool, case_sensitive: bool, max_matches: int)
             with path.open("r", encoding="utf-8", errors="replace") as handle:
                 for lineno, line in enumerate(handle, 1):
                     if expr.search(line):
-                        print(f"{row['path']}:{lineno}:{line.rstrip()}")
+                        print(f"{row['scope']}\t{row['path']}:{lineno}:{line.rstrip()}")
                         matches += 1
                         if matches >= max_matches:
                             return 0
@@ -219,21 +256,26 @@ def main() -> int:
     parser.add_argument("--grep", help="offline search across text-capable tracked files")
     parser.add_argument("--regex", action="store_true", help="treat --grep as a regular expression")
     parser.add_argument("--case-sensitive", action="store_true")
+    parser.add_argument("--scope", choices=SCOPES, help="limit grep to one artifact scope")
     parser.add_argument("--max-matches", type=int, default=500)
     args = parser.parse_args()
     if args.grep is not None:
-        return grep_repo(args.grep, args.regex, args.case_sensitive, args.max_matches)
+        return grep_repo(args.grep, args.regex, args.case_sensitive, args.max_matches, args.scope)
     records = build_records()
     if args.write:
         write_outputs(records)
     if args.check:
         return check_outputs(records)
     if not args.write and not args.check:
+        by_scope: dict[str, int] = defaultdict(int)
         by_type: dict[str, int] = defaultdict(int)
         for row in records:
+            by_scope[str(row["scope"])] += 1
             by_type[str(row["type"])] += 1
+        for scope in SCOPES:
+            print(f"SCOPE\t{scope}\t{by_scope[scope]}")
         for key in sorted(by_type, key=str.casefold):
-            print(f"{key}\t{by_type[key]}")
+            print(f"TYPE\t{key}\t{by_type[key]}")
         print(f"TOTAL\t{len(records)}")
     return 0
 
