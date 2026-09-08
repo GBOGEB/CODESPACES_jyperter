@@ -1,26 +1,55 @@
-name: QPLANT Build & Export
+name: QPLANT Legacy Smoke & Export
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
+      - 'triage/renegade-self-analysis-*'
+    paths:
+      - 'GLOBAL_index.json'
+      - 'scripts/build_index.py'
+      - 'scripts/recursive_build.py'
+      - '.github/workflows/qplant-build.yml'
   workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Install deps
+
+      - name: Validate curated global index
+        run: python scripts/build_index.py --check
+
+      - name: Run maintained recursive smoke builder
+        run: >-
+          python scripts/recursive_build.py
+          --index GLOBAL_index.json
+          --out outputs/qplant_legacy_metrics.json
+          --smoke
+
+      - name: Verify smoke output
         run: |
-          python -m pip install --upgrade pip
-          pip install pandas
-      - name: Run recursive builder
-        run: python recursive_builder.py
-      - name: Upload artifacts
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          path = Path('outputs/qplant_legacy_metrics.json')
+          data = json.loads(path.read_text(encoding='utf-8'))
+          assert data.get('smoke') is True
+          assert isinstance(data.get('artefact_count'), int)
+          print(f"PASS qplant legacy smoke artefact_count={data['artefact_count']}")
+          PY
+
+      - name: Upload bounded legacy smoke artifact
         uses: actions/upload-artifact@v4
         with:
-          name: qplant-outputs
-          path: outputs/**
+          name: qplant-legacy-smoke
+          path: outputs/qplant_legacy_metrics.json
+          if-no-files-found: error
