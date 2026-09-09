@@ -1,0 +1,40 @@
+name: Standalone profile runner
+
+on:
+  pull_request:
+    paths:
+      - 'app/run_pipeline.py'
+      - 'app/index_repo.py'
+      - 'scripts/build_index.py'
+      - 'scripts/recursive_build.py'
+      - '.github/workflows/standalone-profile-runner.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  profiles:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      matrix:
+        profile: [index, qplant-smoke, default]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run bounded profile
+        run: python app/run_pipeline.py --profile '${{ matrix.profile }}'
+      - name: Validate receipt
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('outputs/standalone_pipeline_receipt.json')
+          d = json.loads(p.read_text())
+          assert d['status'] == 'PASS', d
+          assert d['commands'], d
+          print(d['profile'], len(d['commands']), 'commands PASS')
+          PY
