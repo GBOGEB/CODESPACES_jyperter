@@ -1,0 +1,33 @@
+name: Value extraction smoke
+
+on:
+  pull_request:
+    paths:
+      - 'app/index_repo.py'
+      - 'scripts/repo_artifact_index.py'
+      - '.github/workflows/value-extraction-smoke.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  workspace-index:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run compatibility index command
+        run: python app/index_repo.py
+      - name: Verify scope-aware outputs
+        run: |
+          test -s triage/repo_index/ARTIFACT_INDEX.yaml
+          test -s triage/repo_index/FILE_INDEX.tsv
+          grep -q '^  CORE:' triage/repo_index/ARTIFACT_INDEX.yaml
+          grep -q '^  ENVIRONMENT_VENDOR:' triage/repo_index/ARTIFACT_INDEX.yaml
+          grep -q 'Offline Search' INDEX.md
+      - name: Exercise CORE-only offline grep
+        run: python scripts/repo_artifact_index.py --grep QPLANT --scope CORE --max-matches 5 || true
