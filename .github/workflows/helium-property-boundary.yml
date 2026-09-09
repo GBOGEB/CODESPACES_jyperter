@@ -1,0 +1,32 @@
+name: Helium property boundary
+
+on:
+  pull_request:
+    paths:
+      - 'src/helium_flow.py'
+      - 'tests/test_helium_property_boundary.py'
+      - '.github/workflows/helium-property-boundary.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  helium-property-boundary:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install focused dependencies
+        run: python -m pip install pytest pandas
+      - name: Run property evidence boundary tests
+        run: python -m pytest -q tests/test_helium_property_boundary.py
+      - name: Build reference tables
+        run: |
+          mkdir -p data
+          python src/helium_flow.py
+          test -s data/helium_reference_300K.csv
+          grep -q 'REFERENCE_RATIO_ESTIMATE' data/helium_reference_300K.csv
