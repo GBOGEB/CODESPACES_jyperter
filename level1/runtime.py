@@ -21,19 +21,21 @@ def census():
     marks={'index':'## Index','aod':'## AOD','dmaic':'## DMAIC','pca':'## PCA','bt':'## BT'}
     g={k:(v in text(CONTROL)) for k,v in marks.items()}
     g.update(manifest=MANIFEST.is_file(),ssot=SSOT.is_file(),skill=SKILL.is_file(),runtime=Path(__file__).is_file(),blocks_functions=bool(BLOCKS),agents=AGENT.is_file() and bool(AGENTS),orchestration=callable(orchestrate))
-    s=obj(SSOT); n=sum(g.values()); total=len(g)
-    return {'schema':'gbogeb-level1-census/v1','repo':s.get('repo',ROOT.name),'head_sha':gitsha(),'gates':g,'passed':n,'total':total,'level':round(n/total,4),'level_1_0':n==total,'existing_runtime_refs':{r:(ROOT/r).exists() for r in s.get('existing_runtime_refs',[])}}
+    s=obj(SSOT); n=sum(g.values()); total=len(g); refs={r:(ROOT/r).exists() for r in s.get('existing_runtime_refs',[])}; native_ok=all(refs.values()) if refs else True
+    return {'schema':'gbogeb-level1-census/v2','repo':s.get('repo',ROOT.name),'head_sha':gitsha(),'gates':g,'passed':n,'total':total,'level':round(n/total,4),'level_1_0':n==total and native_ok,'control_level_1_0':n==total,'native_runtime_refs_ok':native_ok,'existing_runtime_refs':refs}
 
 def mip():
     c=census(); s=obj(SSOT); missing=[k for k,v in c['gates'].items() if not v]
-    return {'repo':s.get('repo',ROOT.name),'role':s.get('role'),'authority':s.get('authority',{}),'modernize':{'missing_or_stale':missing},'innovate':{'edges':['SSOT->runtime','runtime->agent','agent->orchestrator','metrics->PCA','comparisons->BT'],'authority_transfer':False},'perpetuate':{'command':'python level1/runtime.py self-test','exact_sha_required':True,'promotion':'12/12 + green CI'}}
+    if not c['native_runtime_refs_ok']: missing.append('native_runtime_refs')
+    return {'repo':s.get('repo',ROOT.name),'role':s.get('role'),'authority':s.get('authority',{}),'modernize':{'missing_or_stale':missing},'innovate':{'edges':['SSOT->runtime','runtime->agent','agent->orchestrator','metrics->PCA','comparisons->BT'],'authority_transfer':False},'perpetuate':{'command':'python level1/runtime.py self-test','exact_sha_required':True,'promotion':'12/12 + native runtime refs + green CI'}}
 
-def _power(cov,seed):
+def _power(cov, seed):
     v=list(seed); z=math.sqrt(sum(a*a for a in v))
     if z<1e-15: return None
     v=[a/z for a in v]
     for _ in range(64):
-        w=[sum(cov[i][j]*v[j] for j in range(len(v))) for i in range(len(v))]; z=math.sqrt(sum(a*a for a in w))
+        w=[sum(cov[i][j]*v[j] for j in range(len(v))) for i in range(len(v))]
+        z=math.sqrt(sum(a*a for a in w))
         if z<1e-15: return None
         v=[a/z for a in w]
     eig=sum(v[i]*sum(cov[i][j]*v[j] for j in range(len(v))) for i in range(len(v)))
@@ -45,15 +47,13 @@ def pca(rows):
     if any(len(r)!=p for r in rows): raise ValueError('PCA rows must have equal width')
     means=[sum(r[j] for r in rows)/len(rows) for j in range(p)]; x=[[r[j]-means[j] for j in range(p)] for r in rows]; d=max(len(rows)-1,1); cov=[[sum(r[i]*r[j] for r in x)/d for j in range(p)] for i in range(p)]; tv=sum(cov[i][i] for i in range(p))
     if tv<1e-15: return {'status':'DEFER_ZERO_VARIANCE'}
-    seeds=[[1.0 if i==j else 0.0 for i in range(p)] for j in range(p)]+[[1.0]*p]; candidates=[]
-    for seed in seeds:
-        result=_power(cov,seed)
-        if result is not None: candidates.append(result)
+    seeds=[[1.0 if i==j else 0.0 for i in range(p)] for j in range(p)]+[[1.0]*p]
+    candidates=[r for seed in seeds if (r:=_power(cov,seed)) is not None]
     if not candidates: return {'status':'DEFER_NUMERICAL_DEGENERACY'}
     eig,v=max(candidates,key=lambda item:item[0])
     return {'status':'PASS_TESTABLE_ENGINE','component':v,'explained_variance_ratio':eig/tv if tv else 0.0}
 
-def _components(names,edges):
+def _components(names, edges):
     graph={n:set() for n in names}
     for a,b in edges: graph[a].add(b); graph[b].add(a)
     out=[]; seen=set()
@@ -89,7 +89,7 @@ def orchestrate():
 def selftest():
     c=census(); a=pca([[1,1],[2,2.2],[3,2.9],[4,4.1]]); ortho=pca([[1,-1],[2,-2],[3,-3]]); b=bt([['repair','docs'],['repair','style'],['runtime','docs'],['repair','runtime']]); disc=bt([['A','B'],['C','D']]); self_only=bt([['repair','repair']])
     ok=c['level_1_0'] and a['status'].startswith('PASS') and ortho['status'].startswith('PASS') and b['status'].startswith('PASS') and disc['status']=='DEFER_DISCONNECTED_COMPARISON_GRAPH' and self_only['status']=='DEFER_NO_USABLE_COMPARISONS'
-    return {'schema':'gbogeb-level1-receipt/v2','status':'PASS' if ok else 'FAIL','head_sha':gitsha(),'census':c,'pca_fixture':a,'pca_orthogonal_seed_fixture':ortho,'bt_fixture':b,'bt_disconnected_fixture':disc,'bt_self_only_fixture':self_only,'fixture_is_project_evidence':False,'manifest_sha256':digest(MANIFEST),'ssot_sha256':digest(SSOT)}
+    return {'schema':'gbogeb-level1-receipt/v3','status':'PASS' if ok else 'FAIL','head_sha':gitsha(),'census':c,'pca_fixture':a,'pca_orthogonal_seed_fixture':ortho,'bt_fixture':b,'bt_disconnected_fixture':disc,'bt_self_only_fixture':self_only,'fixture_is_project_evidence':False,'manifest_sha256':digest(MANIFEST),'ssot_sha256':digest(SSOT)}
 
 def main():
     ap=argparse.ArgumentParser(); ap.add_argument('command',choices=['census','mip','pca','bt','orchestrate','self-test']); ap.add_argument('--input'); a=ap.parse_args()
