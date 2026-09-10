@@ -1,0 +1,15 @@
+{
+  "schema": "gbogeb-level1-ssot/v1",
+  "repo": "GBOGEB/CODESPACES_jyperter",
+  "role": "RUNTIME_PROPERTY_NOTEBOOK_WORKER",
+  "default_branch": "main",
+  "existing_runtime_refs": ["src/zip_pipeline.py", "tools/extract_slide_previews.py"],
+  "inputs": ["ZIP archives", "notebooks", "PPTX artifacts", "measured property/runtime data"],
+  "outputs": ["processed artifacts", "runtime/property receipts", "environment/output digests"],
+  "authority": {
+    "may": ["execute local probes", "validate deterministic results", "emit exact-SHA receipts"],
+    "must_not": ["promote exploratory output to authoritative QPS evidence", "invent property-source authority", "transfer child engineering authority"]
+  },
+  "federation_targets": ["GBOGEB/pipeline-automation-hub", "GBOGEB/CODEX", "GBOGEB/ABACUS", "GBOGEB/cryoplant-project"],
+  "status": "PC1_CONTROL_PLANE"
+}
