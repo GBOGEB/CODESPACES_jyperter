@@ -1,0 +1,3 @@
+interface:
+  display_name: "Codespaces Jupyter Level 1"
+  short_description: "Census, MIP and governed notebook worker orchestration"
