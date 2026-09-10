@@ -1,0 +1,10 @@
+{
+  "schema": "gbogeb-level1-manifest/v1",
+  "repo": "GBOGEB/CODESPACES_jyperter",
+  "target_level": 1.0,
+  "gate_count": 12,
+  "gates": ["index", "manifest", "skill", "ssot", "aod", "dmaic", "pca", "bt", "runtime", "blocks_functions", "agents", "orchestration"],
+  "pc_levels": {"PC1": 0.3333, "PC2": 0.75, "PC3": 1.0},
+  "promotion": "PC3 self-test must execute green at the tested SHA; structure alone is not observed Level-1.0",
+  "mip": ["modernize", "innovate", "perpetuate"]
+}
