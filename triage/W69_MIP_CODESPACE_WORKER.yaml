@@ -1,0 +1,36 @@
+wave: W69
+program: MIP_CODESPACE_ARTIFACT_WORKER
+repository: GBOGEB/CODESPACES_jyperter
+role: artifact_execution_and_preview_worker
+existing_capabilities:
+  - src/zip_pipeline.py
+  - tools/extract_slide_previews.py
+modernize:
+  - inventory existing ZIP, PPTX preview, test and runtime surfaces
+  - separate source artifacts from generated previews and temporary archives
+  - retain source SHA and digest through processing
+innovate:
+  - use slide digital twins and preview HTML as visual QA evidence producers
+  - expose artifact family parity and processing telemetry to ABACUS
+  - route semantic summaries through CODEX before child acceptance
+perpetuate:
+  - run smoke, dry-run and integration sequence on every governed artifact family
+  - regenerate preview after PPTX source change
+  - recurse on first failed processing stage
+outputs:
+  - artifact_processing_receipt
+  - slide_texts
+  - slide_digital_twins
+  - preview_html
+  - source_output_digest_map
+federation:
+  semantic_consumer: CODEX
+  analytics_consumer: ABACUS
+  domain_consumer: cryoplant-project
+victory:
+  - one real artifact executes through greater_than_0 processing steps
+  - output lineage binds to exact source digest
+  - repeated processing is zero-delta or explicitly dispositioned
+claim_guards:
+  - PREVIEW_NE_CANONICAL_BINARY
+  - PROCESSING_PASS_NE_ENGINEERING_CREDIT
