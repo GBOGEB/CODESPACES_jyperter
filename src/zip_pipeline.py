@@ -61,7 +61,7 @@ def run_integration_tests(extracted_dir: str | Path) -> None:
 
 
 def process_zip(zip_path: str | Path) -> None:
-    """Process ``zip_path`` using the defined pipeline and delete the archive."""
+    """Process ``zip_path`` using the pipeline and delete the archive."""
     zip_path = Path(zip_path)
     with tempfile.TemporaryDirectory() as tmpdir:
         with zipfile.ZipFile(zip_path, "r") as zf:
@@ -76,7 +76,11 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(description="Process ZIP archives")
-    parser.add_argument("base_dirs", nargs="+", help="Directories to search for ZIP files")
+    parser.add_argument(
+        "base_dirs",
+        nargs="+",
+        help="Directories to search for ZIP files",
+    )
     args = parser.parse_args()
 
     for zip_file in discover_zip_files(args.base_dirs):
