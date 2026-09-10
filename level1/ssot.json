@@ -11,5 +11,7 @@
     "must_not": ["promote exploratory output to authoritative QPS evidence", "invent property-source authority", "transfer child engineering authority"]
   },
   "federation_targets": ["GBOGEB/pipeline-automation-hub", "GBOGEB/CODEX", "GBOGEB/ABACUS", "GBOGEB/cryoplant-project"],
-  "status": "PC1_CONTROL_PLANE"
+  "status": "PC3_LEVEL1_CANDIDATE",
+  "promotion_requires": "12/12 census gates and green exact-head Level 1 MIP workflow",
+  "authority_transfer": false
 }
