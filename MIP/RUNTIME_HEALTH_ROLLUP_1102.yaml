@@ -1,0 +1,9 @@
+schema_version: "0.1"
+rollup_id: ABACUS-1102-RUNTIME-HEALTH
+seed: {repo: GBOGEB/ABACUS, pr: 1102, merge_sha: 8841dc701a1896233273413c81d7c88d268b9498}
+active_window: 24h
+role: SATELLITE_DEVELOPER_RUNTIME_PROPERTY_WORKER
+runtime_health_relevance: [LLDB_DAP, RUNNERS, MCP, DEBUG_TELEMETRY]
+may_produce: [exact_sha_runtime_receipt, environment_digest, property_output_digest]
+may_not_produce: [QPS_PROPERTY_AUTHORITY_WITHOUT_BOUND_SOURCE, COMPLIANCE_PROMOTION]
+next_victory: fresh notebook_or_cli execution with exact head, environment digest and deterministic property result
