@@ -1,0 +1,23 @@
+schema: gbogeb-federation-activity/1.0.0
+as_of: '2026-09-10T06:47:00+02:00'
+repo: GBOGEB/CODESPACES_jyperter
+classification: SATELLITE_ACTIVE
+federation_role: DEVELOPER_RUNTIME_AND_HELIUM_PROPERTY_WORKSPACE
+last_wave: MIP_ROLLOUT
+recent_activity:
+  - {pr: 53, role: property_table_binding}
+  - {pr: 54, role: mip_rollout, state: MERGED}
+  - {pr: 48, role: dependency_update, state: OPEN_AT_CENSUS}
+  - {pr: 49, role: dependency_update, state: OPEN_AT_CENSUS}
+mip_state: {modernize: ACTIVE, innovate: GATED, perpetuate: WITHHELD}
+three_p_capability: {P1_source_atom: true, P2_integration_graph: partial, P3_evidence_control: partial}
+runtime_proof: {state: WITHHELD, required: fresh_notebook_cli_exact_head_receipt}
+source_authority: {state: PROPERTY_EVIDENCE_SATELLITE, may_override_qps_child: false}
+produces_receipts: [property_table_receipt, runtime_environment_receipt]
+consumes_receipts: [property_query_contract, qps_state_definition]
+current_blocker: repeatable notebook/CLI execution and exact-head runtime receipt
+next_victory: fresh exact-head property/runtime execution with deterministic result and environment digests
+federation_dependencies:
+  upstream: [GBOGEB/cryoplant-project, GBOGEB/CODEX]
+  downstream: [GBOGEB/ABACUS, GBOGEB/cryogenic-accelerator-workspace]
+controls: {authority_effect: NONE, engineering_credit: false, compliance_credit: false}
