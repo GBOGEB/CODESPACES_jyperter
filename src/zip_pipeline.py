@@ -1,9 +1,7 @@
-from __future__ import annotations
-
 """Utilities for processing collections of ZIP archives.
 
 This module discovers ZIP files inside one or more base directories and
-processes them sequentially.  For each archive the following steps are
+processes them sequentially. For each archive the following steps are
 performed:
 
 1. Extract the ZIP to a temporary directory.
@@ -13,14 +11,16 @@ performed:
 5. Remove the original ZIP file once processing succeeds.
 
 The module is intentionally simple and aims to provide a reliable example
-of how a ZIP processing pipeline could be automated.  It can be invoked as a
+of how a ZIP processing pipeline could be automated. It can be invoked as a
 script or its functions can be imported and reused.
 """
 
-from pathlib import Path
+from __future__ import annotations
+
 import subprocess
 import tempfile
 import zipfile
+from pathlib import Path
 from typing import Iterable, List
 
 
@@ -52,7 +52,7 @@ def run_dry_run(extracted_dir: str | Path) -> None:
 def run_integration_tests(extracted_dir: str | Path) -> None:
     """Run ``pytest`` inside the extracted directory.
 
-    ``pytest`` returns exit code 5 when no tests are collected.  This is not
+    ``pytest`` returns exit code 5 when no tests are collected. This is not
     considered a failure for the purposes of the pipeline.
     """
     result = subprocess.run(["pytest"], cwd=extracted_dir)
