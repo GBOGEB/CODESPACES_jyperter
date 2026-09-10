@@ -28,22 +28,52 @@ def mip():
     c=census(); s=obj(SSOT); missing=[k for k,v in c['gates'].items() if not v]
     return {'repo':s.get('repo',ROOT.name),'role':s.get('role'),'authority':s.get('authority',{}),'modernize':{'missing_or_stale':missing},'innovate':{'edges':['SSOT->runtime','runtime->agent','agent->orchestrator','metrics->PCA','comparisons->BT'],'authority_transfer':False},'perpetuate':{'command':'python level1/runtime.py self-test','exact_sha_required':True,'promotion':'12/12 + green CI'}}
 
+def _power(cov,seed):
+    v=list(seed); z=math.sqrt(sum(a*a for a in v))
+    if z<1e-15: return None
+    v=[a/z for a in v]
+    for _ in range(64):
+        w=[sum(cov[i][j]*v[j] for j in range(len(v))) for i in range(len(v))]; z=math.sqrt(sum(a*a for a in w))
+        if z<1e-15: return None
+        v=[a/z for a in w]
+    eig=sum(v[i]*sum(cov[i][j]*v[j] for j in range(len(v))) for i in range(len(v)))
+    return eig,v
+
 def pca(rows):
     if len(rows)<3 or not rows or len(rows[0])<2: return {'status':'DEFER_INSUFFICIENT_OBSERVATIONS'}
-    p=len(rows[0]); means=[sum(r[j] for r in rows)/len(rows) for j in range(p)]; x=[[r[j]-means[j] for j in range(p)] for r in rows]; d=max(len(rows)-1,1); cov=[[sum(r[i]*r[j] for r in x)/d for j in range(p)] for i in range(p)]; v=[1/math.sqrt(p)]*p
-    for _ in range(64):
-        w=[sum(cov[i][j]*v[j] for j in range(p)) for i in range(p)]; z=math.sqrt(sum(a*a for a in w))
-        if z<1e-15: return {'status':'DEFER_ZERO_VARIANCE'}
-        v=[a/z for a in w]
-    eig=sum(v[i]*sum(cov[i][j]*v[j] for j in range(p)) for i in range(p)); tv=sum(cov[i][i] for i in range(p))
+    p=len(rows[0])
+    if any(len(r)!=p for r in rows): raise ValueError('PCA rows must have equal width')
+    means=[sum(r[j] for r in rows)/len(rows) for j in range(p)]; x=[[r[j]-means[j] for j in range(p)] for r in rows]; d=max(len(rows)-1,1); cov=[[sum(r[i]*r[j] for r in x)/d for j in range(p)] for i in range(p)]; tv=sum(cov[i][i] for i in range(p))
+    if tv<1e-15: return {'status':'DEFER_ZERO_VARIANCE'}
+    seeds=[[1.0 if i==j else 0.0 for i in range(p)] for j in range(p)]+[[1.0]*p]; candidates=[]
+    for seed in seeds:
+        result=_power(cov,seed)
+        if result is not None: candidates.append(result)
+    if not candidates: return {'status':'DEFER_NUMERICAL_DEGENERACY'}
+    eig,v=max(candidates,key=lambda item:item[0])
     return {'status':'PASS_TESTABLE_ENGINE','component':v,'explained_variance_ratio':eig/tv if tv else 0.0}
 
+def _components(names,edges):
+    graph={n:set() for n in names}
+    for a,b in edges: graph[a].add(b); graph[b].add(a)
+    out=[]; seen=set()
+    for start in names:
+        if start in seen: continue
+        stack=[start]; comp=[]; seen.add(start)
+        while stack:
+            cur=stack.pop(); comp.append(cur)
+            for nxt in graph[cur]:
+                if nxt not in seen: seen.add(nxt); stack.append(nxt)
+        out.append(sorted(comp))
+    return out
+
 def bt(pairs):
-    if not pairs: return {'status':'DEFER_NO_COMPARISONS','scores':{}}
-    names=sorted({x for a,b in pairs for x in (a,b)}); wins={x:0.0 for x in names}; n={(a,b):0 for a in names for b in names if a!=b}
-    for a,b in pairs:
-        if a==b: continue
-        wins[a]+=1; n[(a,b)]+=1; n[(b,a)]+=1
+    usable=[(a,b) for a,b in pairs if a!=b]
+    if not usable: return {'status':'DEFER_NO_USABLE_COMPARISONS','scores':{}}
+    names=sorted({x for a,b in usable for x in (a,b)}); comps=_components(names,usable)
+    if len(comps)>1: return {'status':'DEFER_DISCONNECTED_COMPARISON_GRAPH','components':comps,'scores':{}}
+    wins={x:0.0 for x in names}; n={(a,b):0 for a in names for b in names if a!=b}
+    for a,b in usable: wins[a]+=1; n[(a,b)]+=1; n[(b,a)]+=1
     s={x:1.0 for x in names}
     for _ in range(64):
         q={}
@@ -57,8 +87,9 @@ def orchestrate():
     s=obj(SSOT); return {'status':'READY','repo':s.get('repo',ROOT.name),'role':s.get('role'),'sequence':['census','modernize','innovate','evidence_analysis','perpetuate'],'blocks':BLOCKS,'agents':AGENTS,'federation_targets':s.get('federation_targets',[]),'mip':mip()}
 
 def selftest():
-    c=census(); a=pca([[1,1],[2,2.2],[3,2.9],[4,4.1]]); b=bt([['repair','docs'],['repair','style'],['runtime','docs'],['repair','runtime']]); ok=c['level_1_0'] and a['status'].startswith('PASS') and b['status'].startswith('PASS')
-    return {'schema':'gbogeb-level1-receipt/v1','status':'PASS' if ok else 'FAIL','head_sha':gitsha(),'census':c,'pca_fixture':a,'bt_fixture':b,'fixture_is_project_evidence':False,'manifest_sha256':digest(MANIFEST),'ssot_sha256':digest(SSOT)}
+    c=census(); a=pca([[1,1],[2,2.2],[3,2.9],[4,4.1]]); ortho=pca([[1,-1],[2,-2],[3,-3]]); b=bt([['repair','docs'],['repair','style'],['runtime','docs'],['repair','runtime']]); disc=bt([['A','B'],['C','D']]); self_only=bt([['repair','repair']])
+    ok=c['level_1_0'] and a['status'].startswith('PASS') and ortho['status'].startswith('PASS') and b['status'].startswith('PASS') and disc['status']=='DEFER_DISCONNECTED_COMPARISON_GRAPH' and self_only['status']=='DEFER_NO_USABLE_COMPARISONS'
+    return {'schema':'gbogeb-level1-receipt/v2','status':'PASS' if ok else 'FAIL','head_sha':gitsha(),'census':c,'pca_fixture':a,'pca_orthogonal_seed_fixture':ortho,'bt_fixture':b,'bt_disconnected_fixture':disc,'bt_self_only_fixture':self_only,'fixture_is_project_evidence':False,'manifest_sha256':digest(MANIFEST),'ssot_sha256':digest(SSOT)}
 
 def main():
     ap=argparse.ArgumentParser(); ap.add_argument('command',choices=['census','mip','pca','bt','orchestrate','self-test']); ap.add_argument('--input'); a=ap.parse_args()

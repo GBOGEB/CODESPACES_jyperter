@@ -1,0 +1,42 @@
+name: Level 1 MIP
+
+on:
+  pull_request:
+    paths:
+      - "LEVEL1.md"
+      - "level1/**"
+      - "skill/**"
+      - ".github/workflows/level1-mip.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  level1:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact tested head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Compile Level-1 kernel
+        run: python -m py_compile level1/runtime.py
+      - name: Execute census MIP and orchestration
+        run: |
+          python level1/runtime.py census
+          python level1/runtime.py mip
+          python level1/runtime.py orchestrate > level1-orchestration.json
+      - name: Prove analytics fail closed without measured inputs
+        run: |
+          python level1/runtime.py pca
+          python level1/runtime.py bt
+      - name: Prove Level-1.0 and emit receipt
+        run: python level1/runtime.py self-test | tee level1-receipt.json
+      - name: Upload Level-1 receipts
+        uses: actions/upload-artifact@v4
+        with:
+          name: level1-mip-receipt
+          path: |
+            level1-receipt.json
+            level1-orchestration.json
