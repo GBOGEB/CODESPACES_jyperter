@@ -1,0 +1,50 @@
+name: QPS W111 Power Utility Workbench
+
+on:
+  pull_request:
+    paths:
+      - 'triage/W111_QPS_POWER_UTILITY_WORKBENCH.yaml'
+      - 'triage/fixtures/W111_power_utility_sanitized_smoke.json'
+      - 'tools/qps_w111_power_utility_preview.py'
+      - 'triage/W69_MIP_CODESPACE_WORKER.yaml'
+      - '.github/workflows/qps-w111-power-utility-workbench.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  sanitized-repeatability:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Render first clean projection
+        run: |
+          mkdir -p /tmp/w111-a
+          python tools/qps_w111_power_utility_preview.py \
+            --input triage/fixtures/W111_power_utility_sanitized_smoke.json \
+            --html /tmp/w111-a/power_utility.html \
+            --receipt /tmp/w111-a/receipt.json
+      - name: Render repeated projection
+        run: |
+          mkdir -p /tmp/w111-b
+          python tools/qps_w111_power_utility_preview.py \
+            --input triage/fixtures/W111_power_utility_sanitized_smoke.json \
+            --html /tmp/w111-b/power_utility.html \
+            --receipt /tmp/w111-b/receipt.json
+      - name: Prove deterministic HTML output
+        run: |
+          sha256sum /tmp/w111-a/power_utility.html /tmp/w111-b/power_utility.html
+          cmp /tmp/w111-a/power_utility.html /tmp/w111-b/power_utility.html
+          echo 'QPS_W111_WORKBENCH_REPEATABILITY=PASS'
+      - name: Upload workbench receipts
+        uses: actions/upload-artifact@v4
+        with:
+          name: qps-w111-power-utility-workbench-${{ github.sha }}
+          path: |
+            /tmp/w111-a/power_utility.html
+            /tmp/w111-a/receipt.json
+            /tmp/w111-b/receipt.json
