@@ -1,0 +1,14 @@
+schema: gbogeb-mesh-dock/1.0
+repo: GBOGEB/CODESPACES_jyperter
+node_id: repo.codespaces_jyperter
+ring: R1_ACTIVE_EXECUTION
+role: RUNTIME_PROPERTY_NOTEBOOK_WORKER
+local_ssot: {primary: level1/ssot.json}
+global_directory: {repo: GBOGEB/CODEX, census: federation/mesh/GLOBAL_HIVE_CENSUS_v1.yaml, action_taxonomy: federation/mesh/GLOBAL_ACTION_TAXONOMY_v1.yaml}
+authority:
+  may: [execute_local_probes, validate_deterministic_results, emit_exact_SHA_receipts]
+  must_not: [promote_exploratory_output_to_QPS_truth, invent_property_authority, transfer_child_authority]
+inputs: [ZIP_archives, notebooks, PPTX_artifacts, measured_property_runtime_data]
+outputs: [processed_artifacts, runtime_property_receipts, environment_output_digests]
+action_classes: [CR, RR, PB, QH, HK, BG]
+first_use_case: execute a reproducible notebook or CLI property probe and return exact-SHA output digests
