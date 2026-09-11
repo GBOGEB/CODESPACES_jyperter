@@ -1,0 +1,80 @@
+schema_version: codespaces-qps-power-utility-workbench/0.1
+wave: W111
+status: CONTROL_CANDIDATE
+repo: GBOGEB/CODESPACES_jyperter
+role: artifact_execution_preview_and_reproducibility_worker
+authority_scope: TOOLING_TRANSFORM
+engineering_promotion_forbidden: true
+
+qps_child_authority:
+  repo: GBOGEB/cryoplant-project
+  source_ssot: ocd-adr/20_canonical/control/QPS_W111_POWER_UTILITY_SOURCE_SSOT_v1.json
+  source_ssot_git_blob_sha: d19975a150a3530cc4db3bd2fbbf4180f757c2a4
+
+upstream_roles:
+  semantic: GBOGEB/CODEX
+  analytical: GBOGEB/ABACUS
+  thermophysical_reference: GBOGEB/CoolProp
+  document_projection: GBOGEB/DOCX_RTM_Automation
+
+accepted_input:
+  form: SANITIZED_TYPED_RECEIPT
+  required: [payload_id, source_ssot_git_blob_sha, payload_sha256, authority_scope, engineering_promotion_forbidden, atoms]
+  atom_required: [name, value, unit, evidence_class, source_pointer]
+  prohibited:
+    - bidder_pdf_bytes
+    - full_bidder_offer_text
+    - unrestricted_commercial_price_table
+    - credentials_or_secrets
+
+workbench_outputs:
+  - validation_summary
+  - HTML_boundary_waterfall
+  - source_pointer_table
+  - UNKNOWN_and_DEFER_table
+  - reproducibility_receipt
+  - output_SHA256
+
+visualization_contract:
+  views:
+    - E0_E4_electrical_boundary
+    - T0_T5_thermal_boundary
+    - HP_PVPS_CC_process_power
+    - unreconciled_electrical_residual
+    - invCOP_E3_vs_E4_sensitivity
+    - source_coverage_and_evidence_class
+  rules:
+    - missing_is_UNKNOWN_not_zero
+    - measured_vendor_calculated_inferred_postulated_unknown_must_render_distinctly
+    - parent_findings_show_parent_receipt_digest
+    - no_user_facing_view_may_hide_source_pointer
+
+pipeline:
+  - receive_sanitized_receipt
+  - validate_identity_and_no_promotion
+  - validate_no_forbidden_raw_source_fields
+  - render_preview
+  - hash_outputs
+  - repeat_clean_checkout
+  - compare_zero_delta_or_explain_delta
+  - return_artifact_receipt_to_ABACUS_CODEX_child
+
+cross_pollination:
+  reuse_from_W69:
+    - source_output_digest_map
+    - preview_HTML
+    - artifact_processing_receipt
+  new_value:
+    - generalize_artifact_worker_from_slide_preview_to_engineering_boundary_receipt_preview
+    - demonstrate_same_digest_receipt_can_feed_notebook_HTML_and_future_dashboard_without_SSOT_fork
+
+DoD:
+  contract_present: true
+  renderer_present: PENDING
+  smoke_fixture_present: PENDING
+  CI: PENDING
+  repeatability_receipt: PENDING
+
+victory: >-
+  A sanitized typed W111 receipt executes through greater-than-zero workbench steps and emits a source-pointer-preserving
+  HTML/reproducibility receipt without becoming a QPS authority or requiring bidder source files.
