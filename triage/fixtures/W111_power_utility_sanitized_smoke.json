@@ -1,0 +1,24 @@
+{
+  "payload_id": "QPS-W111-POWER-UTILITY-SMOKE-NONAUTHORITATIVE",
+  "source_ssot_git_blob_sha": "d19975a150a3530cc4db3bd2fbbf4180f757c2a4",
+  "payload_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "authority_scope": "TOOLING_TRANSFORM_SMOKE_FIXTURE",
+  "engineering_promotion_forbidden": true,
+  "smoke_fixture": true,
+  "atoms": [
+    {
+      "name": "EXAMPLE_E3_PROCESS_POWER",
+      "value": 1.0,
+      "unit": "kW",
+      "evidence_class": "SYNTHETIC_SMOKE",
+      "source_pointer": "fixture://non-authoritative"
+    },
+    {
+      "name": "EXAMPLE_UNKNOWN_HVAC_POWER",
+      "value": null,
+      "unit": "kW",
+      "evidence_class": "UNKNOWN",
+      "source_pointer": "fixture://non-authoritative"
+    }
+  ]
+}
