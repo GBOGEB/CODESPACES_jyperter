@@ -1,0 +1,73 @@
+name: W107 Runtime Proof
+
+on:
+  pull_request:
+    paths:
+      - "federation/w107/**"
+      - ".github/workflows/w107-runtime-proof.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-head-cli-proof:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR source head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install minimal runtime dependency
+        run: python -m pip install --disable-pip-version-check pandas
+      - name: Execute exact-head CLI proof
+        shell: bash
+        run: |
+          set -euo pipefail
+          SOURCE_SHA="${{ github.event.pull_request.head.sha || github.sha }}"
+          ACTUAL_SHA="$(git rev-parse HEAD)"
+          test "$ACTUAL_SHA" = "$SOURCE_SHA"
+          python src/qplant_tender.py --help | tee /tmp/w107-cli-help.txt
+          test -s /tmp/w107-cli-help.txt
+          RECEIPT=federation/w107/W107_CHILD_ACCEPT_RECEIPT_849.yaml
+          test -s "$RECEIPT"
+          CLI_SHA="$(sha256sum /tmp/w107-cli-help.txt | awk '{print $1}')"
+          RECEIPT_SHA="$(sha256sum "$RECEIPT" | awk '{print $1}')"
+          CLI_LINES="$(wc -l < /tmp/w107-cli-help.txt | tr -d ' ')"
+          test "$CLI_LINES" -gt 0
+          python - <<PY
+          import json
+          payload = {
+              "schema_version": "w107-satellite-runtime-proof/0.1",
+              "satellite": "GBOGEB/CODESPACES_jyperter",
+              "source_sha": "$SOURCE_SHA",
+              "actual_sha": "$ACTUAL_SHA",
+              "capability": "property_notebook_cli_worker",
+              "probe": "python src/qplant_tender.py --help",
+              "probe_steps_gt_zero": True,
+              "cli_output_lines": int("$CLI_LINES"),
+              "cli_output_sha256": "$CLI_SHA",
+              "accepted_child_receipt_sha256": "$RECEIPT_SHA",
+              "disposition": "ACCEPT_RUNTIME_EXECUTION",
+              "guards": [
+                  "no_QPS_engineering_authority_transfer",
+                  "no_compliance_or_negotiation_credit",
+                  "preserve_property_source_authority",
+              ],
+          }
+          with open("/tmp/W107_RUNTIME_PROOF.json", "w", encoding="utf-8") as f:
+              json.dump(payload, f, indent=2, sort_keys=True)
+              f.write("\n")
+          PY
+          cat /tmp/W107_RUNTIME_PROOF.json
+          sha256sum /tmp/W107_RUNTIME_PROOF.json
+      - name: Upload runtime proof receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: w107-runtime-proof
+          path: /tmp/W107_RUNTIME_PROOF.json
+          if-no-files-found: error
