@@ -1,0 +1,29 @@
+schema_version: "w107-satellite-child-accept/0.1"
+wave: W107
+satellite: GBOGEB/CODESPACES_jyperter
+source_child:
+  repository: GBOGEB/cryoplant-project
+  pr: 849
+  merge_sha: 39ecdae09fff21b16df505c06e8c8c060bbe9b20
+  disposition: ACCEPT
+source_dow:
+  repository: GBOGEB/ABACUS
+  pr: 1108
+  merge_sha: 1dcfd8bcd11831460d6f39d4e8cf2748b0758e13
+source_keb:
+  repository: GBOGEB/CODEX
+  pr: 600
+  producer_head_sha: 7f062faf8c76a6e89780bb0fbb1ee1fe96f5af4b
+  workflow_run: 34514179505
+runtime_health:
+  domain: LLDB_DAP_SWIFT_DOCKER_RUNNERS_MCP
+  probe: ACCEPT
+  dov: PASS
+  real_lldb_steps: 10
+satellite_disposition: CONSUME_ACCEPTED_RUNTIME_HEALTH_RECEIPT
+capability_boundary: property_notebook_cli_worker
+next_proof: fresh_exact_head_notebook_or_cli_run_with_environment_and_deterministic_result_digests
+guards:
+  - no_QPS_engineering_authority_transfer
+  - no_compliance_or_negotiation_credit
+  - preserve_property_source_authority
