@@ -350,11 +350,15 @@ def status_api():
 @app.post("/run_parser")
 def run_parser():
     if not PARSER_PATH.exists():
+        try:
+            parser_label = str(PARSER_PATH.relative_to(REPO_ROOT))
+        except ValueError:
+            parser_label = str(PARSER_PATH)
         write_step_status(
             MANIFEST_PATH,
             "S4",
             "blocked",
-            f"Parser missing: {PARSER_PATH.relative_to(REPO_ROOT)}",
+            f"Parser missing: {parser_label}",
         )
         return redirect(url_for("home"), code=303)
 
