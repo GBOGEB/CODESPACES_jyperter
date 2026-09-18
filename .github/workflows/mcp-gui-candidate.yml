@@ -1,0 +1,35 @@
+name: MCP GUI candidate
+
+on:
+  pull_request:
+    paths:
+      - 'gui_candidate_bundle/**'
+      - 'handover_manifest.json'
+      - '.github/workflows/mcp-gui-candidate.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'gui_candidate_bundle/**'
+      - 'handover_manifest.json'
+      - '.github/workflows/mcp-gui-candidate.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  focused-proof:
+    name: MCP GUI focused proof
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install focused dependencies
+        run: python -m pip install -r gui_candidate_bundle/requirements.txt
+      - name: Run GUI contract tests
+        run: python -m pytest -q gui_candidate_bundle/tests
+      - name: Compile candidate entrypoints
+        run: python -m compileall -q gui_candidate_bundle
