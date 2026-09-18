@@ -1,3 +1,24 @@
 {
-  "step_status": {}
+  "step_status": {},
+  "gui_contract": {
+    "schema": "mcp-human-execution-console/v1",
+    "blocks": [
+      "S1",
+      "S2",
+      "S3",
+      "S4",
+      "S5"
+    ],
+    "status_source_order": [
+      "github-for-S2",
+      "manifest",
+      "default"
+    ],
+    "invariants": [
+      "missing evidence never becomes PASS",
+      "GUI writes preserve unrelated manifest fields",
+      "cards Mermaid and JSON API use one status model",
+      "status is communicated by text and colour"
+    ]
+  }
 }
