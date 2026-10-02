@@ -1,0 +1,52 @@
+schema: codespaces-jyperter-repository-hygiene/v1
+repository: GBOGEB/CODESPACES_jyperter
+date: 2026-10-02
+base_sha: 501ac8b73fb7d36e40fc398bf5571fa324d84b7e
+slice: P1_REPOSITORY_HYGIENE
+authority_transfer: false
+formal_credit_delta: 0
+engineering_credit_delta: 0
+before:
+  tracked_files: 9501
+  tracked_bytes: 277664733
+  venv:
+    tracked_files: 9286
+    tracked_bytes: 271428317
+  generated_repo_index:
+    tracked_files: 2
+    tracked_bytes: 5016732
+after_tree_before_guard_files:
+  tracked_files: 213
+  tracked_bytes: 1219684
+  venv:
+    tracked_files: 0
+  generated_repo_index:
+    tracked_files: 0
+decisions:
+  - path: venv/
+    classification: ENVIRONMENT_VENDOR
+    disposition: UNTRACK
+    rationale: >
+      CI and Codespaces reconstruct Python dependencies from requirements.txt and
+      requirements-dev.txt. The checked-in environment is machine-specific runtime
+      state and contains absolute local Windows paths.
+  - path: triage/repo_index/ARTIFACT_INDEX.yaml
+    classification: GENERATED_OUTPUT
+    disposition: UNTRACK_AND_REGENERATE
+    generator: scripts/repo_artifact_index.py
+  - path: triage/repo_index/FILE_INDEX.tsv
+    classification: GENERATED_OUTPUT
+    disposition: UNTRACK_AND_REGENERATE
+    generator: scripts/repo_artifact_index.py
+controls:
+  - .gitignore excludes venv/ and .venv/
+  - .gitignore excludes generated repository-index outputs
+  - TRIAGE Repository Artifact Index workflow regenerates and uploads the census
+  - tests/test_repository_hygiene_contract.py rejects tracked virtual environments
+  - tests/test_repository_hygiene_contract.py rejects committed generated census outputs
+residuals:
+  - classify remaining generated/runtime/history areas independently before deletion
+  - package identity remains dmaic-measure-phase 1.0.0 and is not changed by P1
+  - style/static-analysis debt remains a separate measured lane
+  - Level-1 status remains PC3_LEVEL1_CANDIDATE
+  - release packaging remains not yet formalized
