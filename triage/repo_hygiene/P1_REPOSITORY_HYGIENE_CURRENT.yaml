@@ -6,6 +6,36 @@ slice: P1_REPOSITORY_HYGIENE
 authority_transfer: false
 formal_credit_delta: 0
 engineering_credit_delta: 0
+status: P1_RESIDUAL_IMPLEMENTED_PENDING_EXACT_HEAD_CI
+residual_census:
+  observed_main_sha: 6d85d1ed3c3329b34fa9c368f76d8be87ff31c9a
+  tracked_files: 215
+  tracked_bytes: 1224175
+  decisions:
+    - path: src/dmaic_measure_phase.egg-info/
+      classification: GENERATED_PACKAGING_METADATA
+      disposition: UNTRACK
+      rationale: setuptools metadata is reproducible from pyproject.toml and already excluded by "*.egg-info/".
+    - path: metrics/generated_metrics.json
+      classification: GENERATED_OUTPUT
+      disposition: UNTRACK_AND_REGENERATE
+      generator: scripts/recursive_build.py
+    - path: INDEX.md
+      classification: GENERATED_OUTPUT
+      disposition: UNTRACK_AND_REGENERATE
+      generator: app/index_repo.py
+    - path: output/handover_final/conversations_manifest.json
+      classification: HISTORICAL_EVIDENCE
+      disposition: MOVE_TO_HANDOVER_ARCHIVE
+      target: handover/archive/CONVERSATIONS_MANIFEST_2025-09-09.json
+    - path: GLOBAL_index.json
+      classification: CONTROLLED_CURATED_INDEX
+      disposition: KEEP
+      guard: scripts/build_index.py --check
+    - path: sec_index.json
+      classification: CONTROLLED_DERIVED_RUNTIME_ASSET
+      disposition: KEEP_UNDER_CI
+      guard: scripts/build_sec_index.py --check
 before:
   tracked_files: 9501
   tracked_bytes: 277664733
@@ -45,7 +75,8 @@ controls:
   - tests/test_repository_hygiene_contract.py rejects tracked virtual environments
   - tests/test_repository_hygiene_contract.py rejects committed generated census outputs
 residuals:
-  - classify remaining generated/runtime/history areas independently before deletion
+  - exact-head CI and post-merge recensus are required before P1 closure
+  - classify any remaining generated/runtime/history areas independently before deletion
   - package identity remains dmaic-measure-phase 1.0.0 and is not changed by P1
   - style/static-analysis debt remains a separate measured lane
   - Level-1 status remains PC3_LEVEL1_CANDIDATE
