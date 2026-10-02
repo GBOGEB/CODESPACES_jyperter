@@ -41,6 +41,26 @@ def test_generated_repository_census_is_not_tracked() -> None:
     )
 
 
+def test_packaging_and_runtime_outputs_are_not_tracked() -> None:
+    tracked = _tracked_paths()
+    exact_generated = {
+        "INDEX.md",
+        "metrics/generated_metrics.json",
+    }
+    runtime_prefixes = ("output/", "outputs/")
+    offenders = sorted(
+        path
+        for path in tracked
+        if path in exact_generated
+        or path.startswith(runtime_prefixes)
+        or any(part.endswith(".egg-info") for part in path.split("/"))
+    )
+    assert offenders == [], (
+        "reproducible packaging/runtime outputs must not be canonical source: "
+        f"{offenders[:10]}"
+    )
+
+
 def test_hygiene_receipt_is_present() -> None:
     receipt = ROOT / "triage" / "repo_hygiene" / "P1_REPOSITORY_HYGIENE_CURRENT.yaml"
     assert receipt.is_file()
