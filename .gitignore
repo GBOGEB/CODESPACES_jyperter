@@ -5,6 +5,12 @@ notebooks/cifar_net.pth
 __pycache__/
 *.pyc
 *.pyo
+
+# Local virtual environments are reconstructed from declared dependencies.
+.venv/
+venv/
+env/
+ENV/
 *.xlsx
 *.xls
 *.xlsm
@@ -42,3 +48,7 @@ Thumbs.db
 
 # Generated metrics (produced by scripts/recursive_build.py)
 metrics/generated_metrics.json
+
+# Generated repository census: create locally or in CI, do not track as source.
+triage/repo_index/ARTIFACT_INDEX.yaml
+triage/repo_index/FILE_INDEX.tsv
