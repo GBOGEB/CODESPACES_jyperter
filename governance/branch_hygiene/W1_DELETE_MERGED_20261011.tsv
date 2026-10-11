@@ -1,0 +1,33 @@
+# W1_DELETE_MERGED (31 branches, mode delete). Census 2026-10-11 against main.
+# Every commit is on main, or a merged PR has this exact head (kept under refs/pull/N/head).
+cleanup/p1-repository-hygiene-20261002	e4bada073207e910311504816109738ddc0fc205	delete
+cleanup/p1-residual-generated-state-20261002	6a022c51900e88898567db7fbe359d046f5ead26	delete
+codex/add-handover-documentation-for-agent_integration_helper	4f1ddf540f8dc45dd7715b068ffbf015c7945851	delete
+codex/bundle-github-ready-repository-structure	380a4f81806e3ee60c368ad6b8cbc5e7699973dc	delete
+codex/create-and-export-confluence-page	69c236ccf28ceb63c31acdf6b0afff943c532852	delete
+codex/create-interactive-html-dashboard	e62c34a274713522783ac5e893515bd09967d335	delete
+codex/create-system-breakdown-structure-and-schematic	f1ce7622af9dd187c5f7df037c39e3063eec135e	delete
+codex/extract-and-refactor-zip-files	4c0b94eabc7a87a6dbeace3752016febdc8101f5	delete
+codex/fix-unresolved-issues	a00e95b1bed43683b6f2705a3f528bcb51ea29bc	delete
+codex/generate-and-submit-project-handover-files	e70a3b21f66746e915af9d3f8d87da232764436a	delete
+codex/generate-conversations-summary-and-manifest	bd5f24a404bcca7b147472fd8153579d94108916	delete
+codex/summarize-master-document-system-implementation	b84eafbe608bcbfe00e7cdf01e0c64e5fab89698	delete
+codex/update-material-selection-for-cryogenic-stability	8978b607a757bfe6344b9dfd84e77fea155e1952	delete
+control/root-handover-coherence-20261002	8a283693f115b24f9e3f95044387ee848bf88610	delete
+copilot/fix-18e2e5bc-8fb9-4be4-90b2-e9f3cd4221b3	408d2b5d65f949232e044841dae4d7d0a9f1661c	delete
+copilot/fix-7aa4f3dd-24bf-468d-841b-8c877b6d2cd6	02e35a0508d1c05ca236e8c23af8c13c747cfb6d	delete
+copilot/fix-stale-branches	e5eec47125c288fcaf06ed9a2e1469df96876eea	delete
+docs/readme-live-state-20261002	d9abdbf1f7bd36a61f32b59054f09a1db2de1579	delete
+feature/parallel-processing	5d90b6ed4872fd07f164c32383bb880e7202b9d4	delete
+fix-src-import-contract-20260926	4c3be38784cf176aec5f4a5de0b7667ba03e3ffc	delete
+measure-phase-hetero-artifacts	5d90b6ed4872fd07f164c32383bb880e7202b9d4	delete
+mip/l1-pc1-control	ed9c913c7a5063fa7c0f6583d721fec9f82bc81a	delete
+mip/l1-pc2-runtime	0b5ce5ca267eec77738442e4b5f9890ef50494bd	delete
+mip/l1-pc3-level1	7152d7dffe7e620ef489db362bbed1ddd4b8f464	delete
+mip/l1-v3-native-gate	d398d4c296d66bb3df249b77a7536058a0d69072	delete
+mip/w69-codespace-artifact-worker	cc51cccc89e11b82caff89c8d86702d400729b58	delete
+modernize/helium-property-boundary-w03	be43c5aee31f1dc165a97d5047881d63fbd7bda5	delete
+modernize/standalone-profile-runner-w04	0c8b498194963ffebc0ff59095131b504f575296	delete
+triage/renegade-self-analysis-w01	17649609d6ed4308532cb321ad27cf3937d60b79	delete
+w111/gloob-projection-adapter	5c2878595820f80e33ef004b61fcb8261f9c441f	delete
+w111/qps-power-utility-workbench	67b5dff96ae9d309574be38eff36f090978a428d	delete

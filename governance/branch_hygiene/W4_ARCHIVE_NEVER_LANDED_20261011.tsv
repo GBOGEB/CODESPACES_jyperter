@@ -1,0 +1,4 @@
+# W4_ARCHIVE_NEVER_LANDED (2 branches, mode archive). Census 2026-10-11 against main.
+# Executable files that never reached main. Run only after the known-fix backlog review. Tagged archive/<branch> first.
+copilot/generate-markdown-patch-package	8009f526bc0d94d7f1fb4664af9db66e62f3c09b	archive
+triage/standalone-modernization-w02-engineering-crosscheck	684ecfe97c5e429d473f3fb46b82b195e3021e0e	archive

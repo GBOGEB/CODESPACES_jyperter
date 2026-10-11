@@ -1,0 +1,4 @@
+# W2_ARCHIVE_SUPERSEDED (2 branches, mode archive). Census 2026-10-11 against main.
+# Changed files already identical on main, docs/evidence snapshots, or unrelated history. Tagged archive/<branch> first.
+cleanup/p1-residual-closure-20261002	18f8a80fbebf54d77efb86d0801b97515db24db0	archive
+mip/ci-import-order-repair	88e902c811d8ba52d2021e552210b6e6e78f3c28	archive
