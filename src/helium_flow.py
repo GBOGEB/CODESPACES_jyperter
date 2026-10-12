@@ -31,6 +31,8 @@ DensityBackend = Callable[[float, float], float]
 
 
 def rho_ideal(pressure_pa: float, temperature_k: float = T_REF) -> float:
+    if pressure_pa <= 0 or temperature_k <= 0:
+        raise ValueError("pressure_pa and temperature_k must be positive")
     return pressure_pa * M_HE / (R * temperature_k)
 
 
@@ -91,11 +93,18 @@ def build_flow_table(
     rho_design: float = 0.168,
     rho_reference: float = REFERENCE_RHO_1ATM,
 ) -> pd.DataFrame:
+    if rho_design <= 0 or rho_reference <= 0:
+        raise ValueError("densities must be positive")
+    mass_flows = list(mass_flows)
     rows = []
     for dn in diameters_mm:
+        if dn <= 0:
+            raise ValueError("diameters must be positive")
         d_m = dn / 1000.0
         area = math.pi * (d_m / 2) ** 2
         for m_g_s in mass_flows:
+            if m_g_s < 0:
+                raise ValueError("mass flows cannot be negative")
             m_kg_s = m_g_s / 1000.0
             v_design = m_kg_s / (rho_design * area)
             v_reference = m_kg_s / (rho_reference * area)
@@ -110,7 +119,7 @@ def build_flow_table(
                 vol_flow_Nm3_h=m_kg_s / 0.1785 * 3600.0,
                 reynolds_design=rho_design * v_design * d_m / MU_HE_300K,
             ))
-    frame = pd.DataFrame(rows)
+    frame = pd.DataFrame(rows, columns=list(FlowRow.__dataclass_fields__))
     frame["velocity_nist"] = frame["velocity_reference"]
     return frame
 
