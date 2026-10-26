@@ -1,24 +1,135 @@
 {
-  "version": "2.0.0",
-  "tasks": [
-    {
-      "label": "Run: run_pipeline",
-      "type": "shell",
-      "command": "python app/orchestrator.py --run run_pipeline",
-      "problemMatcher": []
-    },
-    {
-      "label": "Run: index_repo",
-      "type": "shell",
-      "command": "python app/orchestrator.py --run index_repo",
-      "problemMatcher": []
-    },
-    {
-      "label": "Debug: run_pipeline",
-      "type": "shell",
-      "command": "python app/orchestrator.py --debug run_pipeline",
-
-      "problemMatcher": []
-    }
-  ]
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "KEB: Setup Environment",
+            "type": "shell",
+            "command": "make",
+            "args": ["setup"],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "KEB: Run Complete Pipeline",
+            "type": "shell",
+            "command": "make",
+            "args": ["all"],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "KEB: Ingest MASTER.docx",
+            "type": "shell",
+            "command": "make",
+            "args": ["ingest"],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "KEB: Calculate KPIs",
+            "type": "shell",
+            "command": "make",
+            "args": ["kpi"],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "KEB: Run DMAIC Loop",
+            "type": "shell",
+            "command": "make",
+            "args": ["dmaic"],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "KEB: Start Dashboard",
+            "type": "shell",
+            "command": "make",
+            "args": ["dashboard"],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": [],
+            "isBackground": true
+        },
+        {
+            "label": "KEB: Run Tests",
+            "type": "shell",
+            "command": "make",
+            "args": ["test"],
+            "group": "test",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "KEB: Clean Outputs",
+            "type": "shell",
+            "command": "make",
+            "args": ["clean"],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "KEB: CD Gate Check",
+            "type": "shell",
+            "command": "make",
+            "args": ["gate-check"],
+            "group": "test",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        }
+    ]
 }
