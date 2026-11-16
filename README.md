@@ -102,7 +102,7 @@ CODESPACES_jyperter/
 
 ### Core execution paths
 
-#### 5.1 Level-1 runtime
+#### Level-1 runtime
 
 The Level-1 runtime is the clearest machine-controlled entry point for the repository's governed worker role.
 
@@ -131,7 +131,7 @@ target: LEVEL_1_0
 
 Promotion to `LEVEL_1_0` requires all defined gates plus green exact-head execution of the dedicated Level-1 workflow.
 
-#### 5.2 MCP human execution console
+#### MCP human execution console
 
 Install the focused GUI dependencies:
 
@@ -173,7 +173,7 @@ The GUI is deliberately fail-closed:
 
 See `gui_candidate_bundle/README.md` and `gui_candidate_bundle/HANDOVER.md`.
 
-#### 5.3 ZIP processing pipeline
+#### ZIP processing pipeline
 
 `src/zip_pipeline.py` processes ZIP archives sequentially:
 
@@ -193,7 +193,7 @@ python -m src.zip_pipeline <dir1> <dir2> ...
 
 A pytest exit code of 5 ("no tests collected") is treated as non-failing by this utility.
 
-#### 5.4 PowerPoint slide preview generator
+#### PowerPoint slide preview generator
 
 Generate a lightweight text/style projection of a PPTX:
 
@@ -212,7 +212,7 @@ Outputs:
 
 The title/background heuristic is intentionally lightweight. It is a preview aid, not a PowerPoint rendering engine.
 
-#### 5.5 QPS W111 sanitized power/utility workbench
+#### QPS W111 sanitized power/utility workbench
 
 The W111 lane renders a sanitized, non-authoritative engineering projection and proves deterministic output by rendering twice and comparing the resulting HTML byte-for-byte.
 
@@ -233,7 +233,7 @@ The focused workflow is:
 
 Its role is tooling transformation and reproducibility proof. Processing PASS is not an automatic engineering/compliance PASS.
 
-#### 5.6 Offline repository index
+#### Offline repository index
 
 Build the tracked-artifact census:
 
@@ -294,7 +294,17 @@ Note that `pyproject.toml` is still named `dmaic-measure-phase` version `1.0.0`.
 
 ## 5. Process diagrams
 
-Declared architecture, not a run receipt.
+Declared architecture, not a run receipt. The detailed execution paths are under §3.
+
+```mermaid
+flowchart LR
+  A[artifacts<br/>docs, slides, archives, data] --> M[DMAIC Measure<br/>classify, parse, index, rank]
+  A --> Z[ZIP pipeline<br/>compile smoke, dry run, pytest]
+  A --> T[tools<br/>PPTX preview, W111 workbench]
+  M & Z & T --> R[receipts<br/>source + head + output]
+  R --> L[Level-1 runtime<br/>census, MIP, self-test]
+  L --> F[federation consumers<br/>authority stays at source]
+```
 
 ## 6. Status and open gates
 
@@ -302,12 +312,12 @@ Declared architecture, not a run receipt.
 
 | Gate | Status | What would close it |
 |---|---|---|
-| CI | Main CI **green** 26 Oct 2026 (critical Flake8 classes only, then pytest) | Broader lint debt burned down separately |
-| Pages | Static Pages deploy succeeded 21 Oct; the Jekyll workflow's last run was cancelled the same day | Owner keeps one Pages workflow |
-| Package identity | `pyproject.toml` describes only the Measure subsystem | Decide workbench vs packaged runtime; update metadata |
-| Release | No GitHub Release | Define source, generated output and receipts for a release |
-| Level-1 | `PC3_LEVEL1_CANDIDATE` | 12-gate exact-head proof recorded |
-| Resolved since the 2 Oct snapshot | No `venv/` is tracked any more; root `HANDOVER.md` is now a current handover | — |
+| CI | [Main CI](https://github.com/GBOGEB/CODESPACES_jyperter/actions/workflows/ci.yml) **green** 26 Oct 2026 (critical Flake8 classes only, then pytest) | Broader lint debt burned down separately |
+| Pages | [Static Pages deploy](https://github.com/GBOGEB/CODESPACES_jyperter/actions/workflows/static.yml) succeeded 21 Oct; the [Jekyll workflow](https://github.com/GBOGEB/CODESPACES_jyperter/actions/workflows/jekyll-gh-pages.yml) also deployed on 15 Nov | Owner keeps one Pages workflow |
+| Package identity | [`pyproject.toml`](pyproject.toml) describes only the Measure subsystem | Decide workbench vs packaged runtime; update metadata |
+| Release | No [GitHub Release](https://github.com/GBOGEB/CODESPACES_jyperter/releases) | Define source, generated output and receipts for a release |
+| Level-1 | `PC3_LEVEL1_CANDIDATE` ([LEVEL1.md](LEVEL1.md), [workflow](https://github.com/GBOGEB/CODESPACES_jyperter/actions/workflows/level1-mip.yml)) | 12-gate exact-head proof recorded |
+| Resolved since the 2 Oct snapshot | No `venv/` is tracked any more; root [`HANDOVER.md`](HANDOVER.md) is now a current handover | — |
 
 ## 7. Run it locally
 
@@ -374,7 +384,7 @@ This was introduced so historical formatting/style debt does not prevent behavio
 | [`docs/`](docs/) | Engineering notes |
 | [`tests/`](tests/) | Tests |
 
-**Next actions** (match §6): align package identity → one Pages workflow → define a release → record the Level-1 proof.
+**Next actions** (match §6): align package identity → keep one Pages workflow → define a release → record the Level-1 proof.
 
 ---
 
